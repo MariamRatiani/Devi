@@ -16,6 +16,10 @@ export class Tokenizer  {
         this.deleteUnnecessarySpaces()
     }
 
+    public getSource(): string {
+        return this.source
+    }
+
     scanTokens(): Token[] {
         while(!this.isAtEnd()) {
             this.start = this.current
@@ -94,7 +98,6 @@ export class Tokenizer  {
     private isAlphaNumeric(c: string): boolean{
         return this.isAlpha(c) || this.isDigit(c);
     }
-
 
     private doIdentifier() {
         while(this.isAlphaNumeric(this.peek())){
