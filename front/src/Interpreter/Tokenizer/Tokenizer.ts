@@ -1,9 +1,8 @@
-import {Token} from "./Token.ts";
-import {TokenType} from "./TokenType.ts";
-import {keywords} from "./Keywords.ts"
-import {LiteralType} from "./literalType.ts";
+import { literalType, Token } from "./Token.ts";
+import { TokenType } from "./TokenType.ts";
+import { keywords } from "./Keywords.ts"
 
-export class Tokenizer  {
+export class Tokenizer {
     private source: string;
     private tokens: Token[] = []
     private current: integer
@@ -20,31 +19,34 @@ export class Tokenizer  {
         return this.source
     }
 
+    public getTokens(): Token[] {
+        return this.tokens
+    }
+
     scanTokens(): Token[] {
         while(!this.isAtEnd()) {
             this.start = this.current
             this.scanToken()
         }
 
-        // maybe this line is written incorrectly
-        this.tokens.push(new Token(TokenType.EOF, "", "" ));
+        // this.tokens.push(new Token(TokenType.EOF, "", ));
         return this.tokens
     }
 
     private deleteUnnecessarySpaces() {
         this.deleteComments()
-        // this.deleteWhiteSpaces()
+        this.deleteWhiteSpaces()
     }
-    //
-    // private deleteWhiteSpaces()  {
-    //     this.source = this.source.replace(/\s+/g, '');
-    // }
+
+    private deleteWhiteSpaces()  {
+        this.source = this.source.replace(/\s+/g, '');
+    }
     
     private deleteComments() {
         this.source = this.source.replace(/^\s*\/\/.*$/gm, '');
     }
     
-    private addToken(type: TokenType,  literal: LiteralType) {
+    private addToken(type: TokenType,  literal: literalType) {
         const text: string = this.source.substring(this.start, this.current)
         this.tokens.push(new Token(type, text, literal))
     }
@@ -52,7 +54,6 @@ export class Tokenizer  {
     private scanToken() {
         const c: string = this.advance();
         switch (c) {
-            case ' ': break;
             case '(': this.addToken(TokenType.LEFT_PAREN, null); break;
             case ')': this.addToken(TokenType.RIGHT_PAREN, null); break;
             case '{': this.addToken(TokenType.LEFT_BRACE, null); break;
@@ -63,7 +64,7 @@ export class Tokenizer  {
             case '+': this.addToken(TokenType.PLUS, null); break;
             case ';': this.addToken(TokenType.SEMICOLON, null); break;
             case '*': this.addToken(TokenType.STAR, null); break;
-            
+
             case '!':
                 this.addToken(this.match('=') ? TokenType.BANG_EQUAL : TokenType.BANG, null);
                 break;
@@ -104,31 +105,16 @@ export class Tokenizer  {
             this.advance()
         }
         const text: string = this.source.substring(this.start, this.current);
-        const type = keywords.get(text) || TokenType.IDENTIFIER;  // Fallback to IDENTIFIER if not found
-        
-        switch (type) {
-            case TokenType.TRUE:
-                this.addKeyWordToken(TokenType.TRUE, text, true)
-                return
-            case TokenType.FALSE:
-                this.addKeyWordToken(TokenType.FALSE, text, false)
-                return
-            default:
-                this.addToken(type, text)
-                return
+
+        let type = keywords.get(text)
+        if (type == undefined) {
+            type = TokenType.IDENTIFIER
         }
+        this.addToken(type, null)
     }
-    
-    
-    
-    private addKeyWordToken(type: TokenType, text: string, literal: LiteralType) {
-        // const text: string = this.source.substring(this.start, this.current)
-        this.tokens.push(new Token(type, text, literal))
-    }
-    
     
     private isAlpha(c: string): boolean {
-        return (c >= 'ა' && c <= 'ჰ') || (c >= 'a' && c <= 'z') ||
+        return (c >= 'a' && c <= 'z') ||
             (c >= 'A' && c <= 'Z') ||
             c == '_';
     }
@@ -197,10 +183,4 @@ export class Tokenizer  {
     private isAtEnd(): boolean {
         return this.current >= this.source.length
     }
-
-    public getSource(): string {
-        return this.source
-    }
 }
-
-
