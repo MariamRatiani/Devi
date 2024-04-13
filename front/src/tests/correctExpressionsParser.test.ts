@@ -1,13 +1,12 @@
 import {ExpressionParser} from "../Interpreter/AST/Expressions/ExpressionParser.ts";
-import {Token} from "../Interpreter/Tokenizer/Token.ts";
-import {TokenType} from "../Interpreter/Tokenizer/TokenType.ts";
-import {LiteralType} from "../Interpreter/Tokenizer/literalType.ts";
+import {Token} from "../Interpreter/Token";
+import {TokenType} from "../Interpreter/TokenType";
+import {LiteralType} from "../Interpreter/literalType.ts";
 import {Expression} from "../Interpreter/AST/Expressions/Expression.ts";
 import {Literal} from "../Interpreter/AST/Expressions/ConcreteExpressions/Literal.ts";
 import {Grouping} from "../Interpreter/AST/Expressions/ConcreteExpressions/Grouping.ts";
 import {Unary} from "../Interpreter/AST/Expressions/ConcreteExpressions/Unary.ts";
 import {Binary} from "../Interpreter/AST/Expressions/ConcreteExpressions/Binary.ts";
-import { VarExpr } from "../Interpreter/AST/Expressions/ConcreteExpressions/VarExpr.ts";
 
 function createToken(type: TokenType, lexeme: string, literal: LiteralType) {
     return new Token(type, lexeme, literal);
@@ -29,7 +28,7 @@ describe('test simple literal expressions', () => {
         addEOF(tokens)
         
         const parser = new ExpressionParser(tokens)
-        const expression: Expression | null= parser.parse()
+        const expression: Expression = parser.parse()
         
         expect(expression).toBeInstanceOf(Literal)
         expect((<Literal>expression).value).toBe(42)
@@ -42,7 +41,7 @@ describe('test simple literal expressions', () => {
         addEOF(tokens)
         
         const parser = new ExpressionParser(tokens)
-        const expression: Expression | null= parser.parse()
+        const expression: Expression = parser.parse()
         expect(expression).toBeInstanceOf(Literal)
         expect((<Literal>expression).value).toBe("Mari Rocks")
     })
@@ -55,7 +54,7 @@ describe('test simple literal expressions', () => {
         addEOF(tokens)
 
         const parser = new ExpressionParser(tokens)
-        let expression: Expression | null= parser.parse()
+        let expression: Expression = parser.parse()
         expect(expression).toBeInstanceOf(Literal)
         expect((<Literal>expression).value).toBe(true)
 
@@ -65,7 +64,7 @@ describe('test simple literal expressions', () => {
     })
 })
 
-function parseTokens(tokens: Token[]): Expression{
+function parseTokens(tokens: Token[]): Expression {
     addEOF(tokens); // Ensure EOF is always added
     const parser = new ExpressionParser(tokens);
     return parser.parse();
@@ -99,7 +98,7 @@ describe("test simple literals in parentheses",  () => {
             createToken(TokenType.RIGHT_PAREN, ")", null),
         ]
 
-        let expression: Expression | null= parseTokens(tokens)
+        let expression: Expression = parseTokens(tokens)
 
         expect(expression).toBeInstanceOf(Grouping)
         expect((<Literal>(<Grouping>expression).expression).value).toBe(17)
@@ -211,7 +210,7 @@ function createNumberToken(value: number): Token {
     return createToken(TokenType.NUMBER, value.toString(), value);
 }
 
-function parseExpression(tokens: Token[]): Expression | null{
+function parseExpression(tokens: Token[]): Expression {
     const parser = new ExpressionParser(tokens);
     return parser.parse();
 }
@@ -228,7 +227,7 @@ describe('test simple term', () => {
         addEOF(tokens)
 
 
-        const expression: Expression | null= parseExpression(tokens);
+        const expression: Expression = parseExpression(tokens);
 
         expect(expression).toBeInstanceOf(Binary);
         expect((<Binary>expression).operator.lexeme).toBe('+');
@@ -257,7 +256,7 @@ describe('complex term expressions', () => {
         ];
         
         addEOF(tokens)
-        const expression: Expression | null= parseExpression(tokens);
+        const expression: Expression = parseExpression(tokens);
 
         expect(expression).toBeInstanceOf(Binary);
         const topLevelBinary = expression as Binary;
@@ -458,7 +457,38 @@ describe('equality expressions', () => {
 
 
 describe('complex equality expressions', () => {
-  
+    test('parses nested equality and comparison', () => {
+        // Testing for an expression like: 5 > 3 == 2 < 4
+        const tokens = [
+            createNumberToken(5),
+            createToken(TokenType.GREATER, ">", null),
+            createNumberToken(3),
+            createToken(TokenType.EQUAL_EQUAL, "==", null),
+            createNumberToken(2),
+            createToken(TokenType.LESS, "<", null),
+            createNumberToken(4),
+            createToken(TokenType.EOF, "", null)
+        ]
+
+        const expression = parseExpression(tokens)
+
+        expect(expression).toBeInstanceOf(Binary)
+        const topBinaryExpr = expression as Binary
+        expect(topBinaryExpr.operator.type).toBe(TokenType.EQUAL_EQUAL)
+
+        expect(topBinaryExpr.left).toBeInstanceOf(Binary)
+        const leftBinaryExpr = topBinaryExpr.left as Binary
+        expect(leftBinaryExpr.operator.type).toBe(TokenType.GREATER)
+        expect((leftBinaryExpr.left as Literal).value).toBe(5)
+        expect((leftBinaryExpr.right as Literal).value).toBe(3)
+
+        expect(topBinaryExpr.right).toBeInstanceOf(Binary)
+        const rightBinaryExpr = topBinaryExpr.right as Binary
+        expect(rightBinaryExpr.operator.type).toBe(TokenType.LESS)
+        expect((rightBinaryExpr.left as Literal).value).toBe(2)
+        expect((rightBinaryExpr.right as Literal).value).toBe(4)
+    })
+
     test('parses mixed equality and grouping', () => {
         // Testing for an expression like: (5 != 3) == (2 > 1)
         const tokens = [
@@ -591,122 +621,3 @@ describe('complex expressions integration tests', () => {
         expect(innerExpression.operator.type).toBe(TokenType.MINUS);
     });
 })
-
-
-describe('Logical Operator Parsing Tests', () => {
-    test('parses logical AND (და)', () => {
-        const tokens: Token[] = [
-            new Token(TokenType.TRUE, "ჭეშმარიტი", true),
-            new Token(TokenType.AND, "და", null),
-            new Token(TokenType.FALSE, "მცდარი", false),
-            new Token(TokenType.EOF, "", null)
-        ];
-
-        const expression = parseExpression(tokens);
-
-        expect(expression).toBeInstanceOf(Binary);
-        const binaryExpr = expression as Binary;
-        expect(binaryExpr.operator.type).toBe(TokenType.AND);
-        expect((binaryExpr.left as Literal).value).toBe(true);
-        expect((binaryExpr.right as Literal).value).toBe(false);
-    });
-
-    test('parses logical OR (ან)', () => {
-        const tokens: Token[] = [
-            new Token(TokenType.TRUE, "ჭეშმარიტი", true),
-            new Token(TokenType.OR, "ან", null),
-            new Token(TokenType.TRUE, "ჭეშმარიტი", true),
-            new Token(TokenType.EOF, "", null)
-        ];
-
-        const expression = parseExpression(tokens);
-
-        expect(expression).toBeInstanceOf(Binary);
-        const binaryExpr = expression as Binary;
-        expect(binaryExpr.operator.type).toBe(TokenType.OR);
-        expect((binaryExpr.left as Literal).value).toBe(true);
-        expect((binaryExpr.right as Literal).value).toBe(true);
-    });
-});
-
-describe('VarExpression', () => {
-    test('basic operation', () => {
-        const tokens: Token[] = [
-            new Token(TokenType.IDENTIFIER, "ერთი", null),
-            new Token(TokenType.PLUS, '+', null),
-            new Token(TokenType.NUMBER, '1', 1),
-            new Token(TokenType.EOF, "", null)
-        ]
-
-        const parser = new ExpressionParser(tokens)
-        const expression = parser.parse()
-
-        expect(expression).toBeInstanceOf(Binary);
-        const binaryExpr = expression as Binary;
-        expect(binaryExpr.operator.type).toBe(TokenType.PLUS);
-        expect((binaryExpr.left as VarExpr).name.lexeme).toBe('ერთი');
-        expect((binaryExpr.right as Literal).value).toBe(1);
-    })
-})
-
-
-//
-// describe('test ExpressionParser for logical expressions', () => {
-//     test('parse complex logical and comparison expression', () => {
-//         const tokens = [
-//             new Token(TokenType.LEFT_PAREN, '(', null),
-//             new Token(TokenType.NUMBER, '5', 5),
-//             new Token(TokenType.GREATER_EQUAL, '>=', null),
-//             new Token(TokenType.NUMBER, '5', 5),
-//             new Token(TokenType.RIGHT_PAREN, ')', null),
-//             new Token(TokenType.IDENTIFIER, 'და', null),
-//             new Token(TokenType.LEFT_PAREN, '(', null),
-//             new Token(TokenType.NUMBER, '3', 3),
-//             new Token(TokenType.PLUS, '+', null),
-//             new Token(TokenType.NUMBER, '2', 2),
-//             new Token(TokenType.EQUAL_EQUAL, '==', null),
-//             new Token(TokenType.NUMBER, '5', 5),
-//             new Token(TokenType.RIGHT_PAREN, ')', null),
-//             new Token(TokenType.IDENTIFIER, 'ან', null),
-//             new Token(TokenType.LEFT_PAREN, '(', null),
-//             new Token(TokenType.NUMBER, '10', 10),
-//             new Token(TokenType.BANG_EQUAL, '!=', null),
-//             new Token(TokenType.NUMBER, '2', 2),
-//             new Token(TokenType.STAR, '*', null),
-//             new Token(TokenType.NUMBER, '5', 5),
-//             new Token(TokenType.RIGHT_PAREN, ')', null),
-//             new Token(TokenType.EOF, '', null)
-//         ];
-//
-//         const parser = new ExpressionParser(tokens);
-//         const expression = parser.parse();
-//
-//         // expect(expression).toBeInstanceOf(Binary);
-//         const topLevelOr = expression as Binary;
-//         expect(topLevelOr.operator.type).toBe(TokenType.IDENTIFIER);
-//         expect(topLevelOr.operator.lexeme).toBe('ან');
-//
-//         // Test the left-hand side (AND operation)
-//         const leftAnd = topLevelOr.left as Binary;
-//         expect(leftAnd.operator.lexeme).toBe('და');
-//         expect(leftAnd.left).toBeInstanceOf(Grouping);
-//         expect(leftAnd.right).toBeInstanceOf(Grouping);
-//
-//         // Test the right-hand side, simple comparison
-//         const rightComparison = topLevelOr.right as Grouping;
-//         expect(rightComparison.expression).toBeInstanceOf(Binary);
-//
-//         // Dive into the groups to assert their internal structures
-//         const leftGroupExpression = (leftAnd.left as Grouping).expression as Binary;
-//         expect(leftGroupExpression.left).toBeInstanceOf(Literal);
-//         expect(leftGroupExpression.right).toBeInstanceOf(Literal);
-//         expect(leftGroupExpression.operator.type).toBe(TokenType.GREATER_EQUAL);
-//
-//         const rightGroupExpression = (leftAnd.right as Grouping).expression as Binary;
-//         expect(rightGroupExpression.left).toBeInstanceOf(Binary);
-//         expect(rightGroupExpression.right).toBeInstanceOf(Literal);
-//         expect(rightGroupExpression.operator.type).toBe(TokenType.EQUAL_EQUAL);
-//
-//         // Optionally continue to assert on nested Binary structures...
-//     });
-// });
