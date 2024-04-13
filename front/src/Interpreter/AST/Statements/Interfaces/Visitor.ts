@@ -1,4 +1,3 @@
-import { ForStatement } from "../ConcreteStatements/ForStatement"
 import { FuncStatement } from "../ConcreteStatements/FuncStatement"
 import { IfStatement } from "../ConcreteStatements/IfStatement"
 import { VarStatement } from "../ConcreteStatements/VarStatement"
@@ -9,5 +8,4 @@ export interface Visitor {
     doIfStatement(statement: IfStatement): boolean
     doFuncStatement(statement: FuncStatement): boolean
     doVarStatement(statement: VarStatement): boolean
-    doForStatement(statement: ForStatement): boolean
 }
