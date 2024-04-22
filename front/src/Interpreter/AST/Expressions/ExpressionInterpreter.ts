@@ -2,34 +2,22 @@ import {Expression} from "./Expression.ts";
 import {RuntimeError} from "./RuntimeError.ts";
 import {ExpressionVisitor} from "./ExpressionVisitor/ExpressionVisitor.ts";
 import {Literal} from "./ConcreteExpressions/Literal.ts";
+import * as console from "console";
+// import * as console from "console";
+
 import {Binary} from "./ConcreteExpressions/Binary.ts";
 import {Grouping} from "./ConcreteExpressions/Grouping.ts";
 import {Unary} from "./ConcreteExpressions/Unary.ts";
-import {TokenType} from "../../Tokenizer/TokenType.ts";
-import {Token} from "../../Tokenizer/Token.ts";
-import { VarExpr } from "./ConcreteExpressions/VarExpr.ts";
-import { Environment } from "../Statements/ConcreteStatements/Environment.ts";
+import {TokenType} from "../../TokenType.ts";
+import {Token} from "../../Token.ts";
+
 
 export class ExpressionInterpreter implements ExpressionVisitor<unknown>  {
-    private globalEnvironment: Environment
-    private localEnvironments: Environment[] = []
-
-    setGlobalEnvironment(env: Environment) {
-        this.globalEnvironment = env
-    }
-
-    setLocalEnvironments(envs: Environment[]) {
-        this.localEnvironments = envs
-    }
-
-    addLocalEnvironment(env: Environment) {
-        this.localEnvironments.push(env)
-    }
-
     interpret(expression: Expression): unknown {
         try {
-            return this.evaluate(expression);
-            // console.log(this.stringify(value));
+            const value = this.evaluate(expression);
+            console.log(this.stringify(value));
+            return value
         } catch (error) {
             if (error instanceof RuntimeError) {
                 console.error(`${error.message} [line ${error.token.line}]`);
@@ -41,11 +29,12 @@ export class ExpressionInterpreter implements ExpressionVisitor<unknown>  {
     }
     
     private evaluate(expr: Expression): unknown {
-        // console.log(`Evaluating: ${expr.constructor.name}`, expr);
+        console.log(`Evaluating: ${expr.constructor.name}`, expr);
         return expr.accept(this)
     }
     
-    protected stringify(object: unknown): string {
+
+    private stringify(object: unknown): string {
         if (object === null) return 'nil';
         // Logic to convert Lox value to string representation
         if (typeof object != "undefined")
@@ -65,8 +54,12 @@ export class ExpressionInterpreter implements ExpressionVisitor<unknown>  {
     }
 
     visitBinaryExpr(binaryExpr: Binary): unknown {
+        console.log("before evaluating (57), left type" + binaryExpr.left.left + "  "
+        + binaryExpr.left.operator + "  " + binaryExpr.left.right)
         const left = this.evaluate(binaryExpr.left);
+        console.log("left: " + left)
         const right = this.evaluate(binaryExpr.right);
+        console.log("right: " + right)
 
         switch (binaryExpr.operator.type) {
             case TokenType.PLUS:
@@ -139,7 +132,7 @@ export class ExpressionInterpreter implements ExpressionVisitor<unknown>  {
                 if (this.isOfType('boolean', left, right)) {
                     return left && right;
                 } else {
-                    // console.log("და -> left: " + left + "  right:  " + right)
+                    console.log("და -> left: " + left + "  right:  " + right)
                     throw new Error("Both operands must be booleans for 'და' operation.");
                 }
             case TokenType.OR:
@@ -162,6 +155,7 @@ export class ExpressionInterpreter implements ExpressionVisitor<unknown>  {
         }
     }
     
+
     visitGroupingExpr(groupingExpr: Grouping): unknown {
         // To evaluate a grouping expression, simply evaluate the expression inside the group.
         return this.evaluate(groupingExpr.expression);
@@ -183,19 +177,6 @@ export class ExpressionInterpreter implements ExpressionVisitor<unknown>  {
         }
     }
 
-    visitVarExpr(varExpr: VarExpr): unknown {
-        let variable = this.globalEnvironment.getVariable(varExpr.name.lexeme);
-        if (!variable) {
-            for (const env of this.localEnvironments) {
-                variable = env.getVariable(varExpr.name.lexeme);
-                if (variable) {
-                    break;
-                }
-            }
-        }
-        return variable?.value;
-    }
-    
     private checkNumberOperand(operator: Token, operand: unknown): void {
         if (typeof operand !== 'number') {
             throw new Error(`Operand must be a number. Found ${operand} for operator ${operator.lexeme}.`);
@@ -208,3 +189,9 @@ export class ExpressionInterpreter implements ExpressionVisitor<unknown>  {
         return true;
     }
 }
+
+
+
+const expression: Expression = new Literal(123); // Example expression
+const interpreter = new ExpressionInterpreter();
+interpreter.interpret(expression);
