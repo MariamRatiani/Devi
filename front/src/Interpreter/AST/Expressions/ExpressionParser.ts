@@ -65,11 +65,8 @@ export class ExpressionParser {
     // private hasError: boolean = false
 
     constructor(tokens: Token[]) {
-        console.log(tokens)
+        // console.log(tokens)
         this.tokens = tokens
-        // tokens.pop()
-        // this.tokens = tokens
-        // console.log(this.tokens)
     }
 
     public parse(): Expression {
