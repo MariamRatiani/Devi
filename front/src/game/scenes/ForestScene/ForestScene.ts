@@ -1,16 +1,14 @@
-import {Scene} from "phaser";
+import { Scene } from "phaser";
 import Sprite = Phaser.GameObjects.Sprite;
-import {EventBus} from "../../EventBus.ts";
+import { EventBus } from "../../EventBus.ts";
 import TileSprite = Phaser.GameObjects.TileSprite;
-import {PlatformManager} from "./platformManager.ts";
-import {BackgroundManager} from "./BackgroundManager.ts";
-import {CharacterManager} from "./CharacterManager.ts";
-import {calculateScale, setupCamera} from "./utils.ts";
-import {AssetManager} from "./AssetManager.ts";
+import { PlatformManager } from "./platformManager.ts";
+import { BackgroundManager } from "./BackgroundManager.ts";
+import { CharacterManager } from "./CharacterManager.ts";
+import { calculateScale, setupCamera } from "./utils.ts";
+import { AssetManager } from "./AssetManager.ts";
 
-
-
-export class ForestScene extends Scene {
+export class ForestScene extends Scene implements DeviGame {
     background1: TileSprite;
     background2: TileSprite;
     background3: TileSprite;
@@ -18,7 +16,7 @@ export class ForestScene extends Scene {
     character: Phaser.Physics.Arcade.Sprite;
     ground: Sprite;
 
-    lastTile: TileSprite
+    lastTile: TileSprite;
     camera: Phaser.Cameras.Scene2D.Camera;
     staticPlatforms: Phaser.Physics.Arcade.StaticGroup;
     cursors: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -28,37 +26,37 @@ export class ForestScene extends Scene {
     backgroun2speed: number = 50;
     backgroun3speed: number = 80;
     backgroun4speed: number = 100;
-    platformsSpeed: number = 120
+    platformsSpeed: number = 120;
 
-    platformManager: PlatformManager
-    backgroundManager: BackgroundManager
-    characterManager: CharacterManager
-    assetManager: AssetManager
-    
+    platformManager: PlatformManager;
+    backgroundManager: BackgroundManager;
+    characterManager: CharacterManager;
+    assetManager: AssetManager;
+
     endX: number;
 
-    characterIsMoving: boolean
+    characterIsMoving: boolean;
+    jumpHeight: number = -400; // Define a jump height (negative for upward movement)
 
-    constructor ()
-    {
+    constructor() {
         super('ForestScene');
-        this.characterIsMoving = false
+        this.characterIsMoving = false;
     }
-    
+
     init() {
-        console.log('inited')
+        console.log('inited');
     }
 
     preload() {
-        this.assetManager = new AssetManager(this)
-        this.assetManager.preloadAssets()
+        this.assetManager = new AssetManager(this);
+        this.assetManager.preloadAssets();
     }
 
     private createGround() {
         this.ground = this.staticPlatforms.create(0, this.cameras.main.height - 30, 'ground');
 
         const [xScale, yScale] = calculateScale(this.ground, this.cameras);
-        this.ground.setScale(xScale*2, yScale/9);
+        this.ground.setScale(xScale * 2, yScale / 9);
 
         // Manually update the physics body to match the sprite's visual bounds
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -68,29 +66,29 @@ export class ForestScene extends Scene {
         // Set the origin and scroll factor
         this.ground.setOrigin(0, 0).setScrollFactor(0);
     }
-    
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     create(_data: never) {
-        this.camera = setupCamera(this, 0x35ff00)
+        this.camera = setupCamera(this, 0x35ff00);
 
-        this.staticPlatforms = this.physics.add.staticGroup()
-        this.platforms = this.physics.add.group()
+        this.staticPlatforms = this.physics.add.staticGroup();
+        this.platforms = this.physics.add.group();
 
-        this.backgroundManager = new BackgroundManager(this)
-        this.backgroundManager.createBackgrounds()
-        
-        this.createGround()
-        this.characterManager = new CharacterManager(this)
-        this.characterManager.createCharacter()
-        this.platformManager = new PlatformManager(this)
+        this.backgroundManager = new BackgroundManager(this);
+        this.backgroundManager.createBackgrounds();
+
+        this.createGround();
+        this.characterManager = new CharacterManager(this);
+        this.characterManager.createCharacter();
+        this.platformManager = new PlatformManager(this);
         // this.createPlatforms()
-        this.platformManager.createPlatforms(this)
+        this.platformManager.createPlatforms(this);
 
         //dont know if we need these 2 lines
         // this.physics.add.existing(this.character);
         // this.camera.startFollow(this.character, true, 0.1, 0.0);
 
-        this.platformManager.setColliderToPlatforms()
+        this.platformManager.setColliderToPlatforms();
         this.physics.add.collider(this.character, this.staticPlatforms);
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
@@ -98,27 +96,59 @@ export class ForestScene extends Scene {
 
         EventBus.emit('current-scene-ready', this);
     }
-    
-    update(_time: never, delta: number) {
 
+    update(_time: never, delta: number) {
         if (this.lastTile.x < 100) {
             this.finishGame();
             return;
         }
-
+        
         // update movements
-        this.characterManager.updateCharacterMovement()
-        this.backgroundManager.updateBackgroundMovement(delta)
-        this.platformManager.updatePlatformsPosition(delta)
+        this.characterManager.updateCharacterMovement();
+        this.backgroundManager.updateBackgroundMovement(delta);
+        this.platformManager.updatePlatformsPosition(delta);
+        this.moveCharacter()
+    }
+    
+    private moveCharacter() {
+        this.move()
+        this.jump()
+
     }
 
     private finishGame() {
-        this.input.keyboard?.shutdown()
+        this.input.keyboard?.shutdown();
         this.character.body?.setVelocityX(0);
         this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, 'Game Over', { fontSize: '40px', color: '#FFFFFF' }).setOrigin(0.5);
     }
 
-    changeScene() {
+    changeScene() {}
 
+    jump(): boolean {
+        if (this.character.body.touching.down) {
+            this.character.setVelocityY(this.jumpHeight);
+            return true;
+        }
+        return false;
+    }
+
+    move(): boolean {
+        if (this.characterIsMoving) {
+            return false;
+        }
+
+        this.characterIsMoving = true;
+
+        this.tweens.add({
+            targets: this.character,
+            x: this.character.x + 100,
+            duration: 1000,
+            ease: 'Power2',
+            onComplete: () => {
+                this.characterIsMoving = false;
+            }
+        });
+
+        return true;
     }
 }
