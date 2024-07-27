@@ -6,7 +6,7 @@ export class CharacterManager {
     constructor(scene: ForestScene) {
         this.scene = scene
     }
-    
+
     createCharacter() {
         this.scene.character = this.scene.physics.add.sprite(20, this.scene.camera.height - 400, 'character')
         const scale = calculateScale(this.scene.character, this.scene.cameras)
@@ -28,6 +28,7 @@ export class CharacterManager {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-expect-error
             this.scene.character.body.velocity.x = 0; // Stop horizontal movement
+            
         }
     }
 
@@ -41,21 +42,27 @@ export class CharacterManager {
     private handleFlipingCharacter(){
         const moveAmount = this.scene.cursors.left.isDown ? -1*(CHARACTER_VELOCITY_X) : this.scene.cursors.right.isDown ? CHARACTER_VELOCITY_X : 0;
         moveAmount < 0 ? this.scene.character.flipX = true : this.scene.character.flipX = false
+        if (moveAmount != 0) {
+            this.scene.characterIsMoving = true
+        }else {
+            this.scene.characterIsMoving = false
+        }
     }
     // CHARACTER_VELOCITY: number = 100
     private handleCharacterXCoordinateMoving() {
+        this.scene.characterIsMoving = true
         const moveAmount = this.scene.cursors.left.isDown ? -1*(CHARACTER_VELOCITY_X): this.scene.cursors.right.isDown ? CHARACTER_VELOCITY_X : 0;
         const characterRightEdge = this.scene.character.x + this.scene.character.width;
 
-        console.log("moveAmoubnt: ", moveAmount)
         moveAmount < 0 ? this.scene.character.flipX = true : this.scene.character.flipX = false
         if (characterRightEdge < this.scene.camera.width && moveAmount > 0) {
-            this.scene.character.body?.setVelocityX(moveAmount);
+            this.scene.character.setVelocityX(moveAmount);
 
         } else if (this.scene.character.x > 20 && moveAmount < 0) {
-            this.scene.character.body?.setVelocityX(moveAmount);
+            this.scene.character.setVelocityX(moveAmount);
         }else {
-            this.scene.character.body?.setVelocityX(0);
+            this.scene.character.setVelocityX(0);
+            this.scene.characterIsMoving = false
         }
     }
 }

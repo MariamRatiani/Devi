@@ -10,18 +10,15 @@ import {AssetManager} from "./AssetManager.ts";
 
 
 
-
 export class ForestScene extends Scene {
     background1: TileSprite;
     background2: TileSprite;
     background3: TileSprite;
     background4: TileSprite;
-    character: Phaser.GameObjects.Sprite;
+    character: Phaser.Physics.Arcade.Sprite;
     ground: Sprite;
-    endX: number = 800;
 
-    private lastTile: TileSprite
-
+    lastTile: TileSprite
     camera: Phaser.Cameras.Scene2D.Camera;
     staticPlatforms: Phaser.Physics.Arcade.StaticGroup;
     cursors: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -38,9 +35,14 @@ export class ForestScene extends Scene {
     characterManager: CharacterManager
     assetManager: AssetManager
     
+    endX: number;
+
+    characterIsMoving: boolean
+
     constructor ()
     {
         super('ForestScene');
+        this.characterIsMoving = false
     }
     
     init() {
@@ -99,11 +101,10 @@ export class ForestScene extends Scene {
     
     update(_time: never, delta: number) {
 
-
-        // if (this.lastTile.x <900) {
-        //     this.finishGame();
-        //     return;
-        // }
+        if (this.lastTile.x < 100) {
+            this.finishGame();
+            return;
+        }
 
         // update movements
         this.characterManager.updateCharacterMovement()
