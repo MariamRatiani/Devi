@@ -41,12 +41,14 @@ export class BackgroundManager {
     }
 
     updateBackgroundMovement(delta: number ) {
+
         if (this.scene.characterIsMoving) {
-            if (this.scene.cursors.left.isDown) {
-                this.moveBackground(delta, false)
-            } else if (this.scene.cursors.right.isDown) {
-                this.moveBackground(delta, true)
-            }
+            // if (this.scene.cursors.left.isDown) {
+            //     this.moveBackground(delta, false)
+            // } else if (this.scene.cursors.right.isDown) {
+            console.log("backgtounf should be moving")
+            this.moveBackground(delta, true)
+            // }
         }
     }
     

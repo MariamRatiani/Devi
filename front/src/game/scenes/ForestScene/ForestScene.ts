@@ -7,6 +7,7 @@ import { BackgroundManager } from "./BackgroundManager.ts";
 import { CharacterManager } from "./CharacterManager.ts";
 import { calculateScale, setupCamera } from "./utils.ts";
 import { AssetManager } from "./AssetManager.ts";
+import {JUMP_HEIGHT} from "./constants.ts";
 
 export class ForestScene extends Scene implements DeviGame {
     background1: TileSprite;
@@ -36,7 +37,6 @@ export class ForestScene extends Scene implements DeviGame {
     endX: number;
 
     characterIsMoving: boolean;
-    jumpHeight: number = -400; // Define a jump height (negative for upward movement)
 
     constructor() {
         super('ForestScene');
@@ -95,6 +95,8 @@ export class ForestScene extends Scene implements DeviGame {
         this.cursors = this.input.keyboard.createCursorKeys();
 
         EventBus.emit('current-scene-ready', this);
+        this.testDeviGame()
+
     }
 
     update(_time: never, delta: number) {
@@ -102,18 +104,17 @@ export class ForestScene extends Scene implements DeviGame {
             this.finishGame();
             return;
         }
-        
+
         // update movements
-        this.characterManager.updateCharacterMovement();
+        // this.characterManager.updateCharacterMovement();
+
         this.backgroundManager.updateBackgroundMovement(delta);
         this.platformManager.updatePlatformsPosition(delta);
-        this.moveCharacter()
     }
     
-    private moveCharacter() {
-        this.move()
+    private testDeviGame() {
         this.jump()
-
+        // this.move()
     }
 
     private finishGame() {
@@ -122,14 +123,23 @@ export class ForestScene extends Scene implements DeviGame {
         this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, 'Game Over', { fontSize: '40px', color: '#FFFFFF' }).setOrigin(0.5);
     }
 
-    changeScene() {}
 
     jump(): boolean {
-        if (this.character.body.touching.down) {
-            this.character.setVelocityY(this.jumpHeight);
-            return true;
+        if (this.characterIsMoving) {
+            return false;
         }
-        return false;
+
+        this.characterIsMoving = true;
+        this.character.setVelocityY(JUMP_HEIGHT);
+
+        // Use a timer to reset characterIsMoving after the jump
+        this.time.delayedCall(1500, () => {
+            // if (this.character.body.touching.down) {
+                this.characterIsMoving = false;
+            // }
+            }, [], this);
+
+        return true;
     }
 
     move(): boolean {

@@ -70,13 +70,27 @@ export class PlatformManager {
         // }
     }
 
+
     public updatePlatformsPosition(delta: number) {
+        if (this.scene.characterIsMoving) {
+            const moveAmount = PLATFORMS_VELOCITY / delta;
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error
+            this.scene.platforms.children.each((platform: Phaser.Physics.Arcade.Sprite) => {
+                platform.x -= moveAmount;
+                if (platform.x + platform.width < 0) {
+                    platform.x = this.scene.endX;
+                }
+            });
+        }
+    }
+    public updatePlatformsPositionOld(delta: number) {
         // Update the platforms position here
         const updatePosition = (platform: Phaser.Physics.Arcade.Sprite) => {
             // const moveAmount = this.scene.cursors.left.isDown ? -this.scene.platformsSpeed / delta : this.scene.cursors.right.isDown ? this.scene.platformsSpeed / delta : 0;
 
             const moveAmount = PLATFORMS_VELOCITY 
-            
+
             if (this.scene.cursors.left.isDown) {
                 platform.setVelocityX(moveAmount)
                 // platform.body?.setVelocityX(moveAmount)
