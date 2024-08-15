@@ -10,7 +10,7 @@ export class CharacterManager {
     createCharacter() {
         this.scene.character = this.scene.physics.add.sprite(20, this.scene.camera.height - 400, 'character')
         const scale = calculateScale(this.scene.character, this.scene.cameras)
-        const scalingNumber: number = 10
+        const scalingNumber: number = 7
         this.scene.character.setScale(scale[0]/scalingNumber, scale[0]/scalingNumber).setOrigin(0, 0).setScrollFactor(0)
 
     }
