@@ -5,60 +5,32 @@ import GeorgianCodeEditor from "../editor/GeorgianLanguageEditor.tsx";
 
 function Playground()
 {
-
-    //    References to the PhaserGame component (game and scene are exposed)
+    const [code, setCode] = useState('// დაწერე კოდი აქ');
     const phaserRef = useRef<IRefPhaserGame | null>(null);
-    //
-    // const changeScene = () => {
-    //
-    //     if(phaserRef.current)
-    //     {
-    //         const scene = phaserRef.current.scene as TsikaraFirstLevel;
-    //
-    //         if (scene)
-    //         {
-    //             scene.changeScene();
-    //         }
-    //     }
-    // }
-    //
-    //
-    // Event emitted from the PhaserGame component
-    // const currentScene = (scene: Phaser.Scene) => {
-    //     console.log(scene)
-    // }
-    //ferences to the PhaserGame component (game and scene are exposed)
-    //const phaserRef = useRef<IRefPhaserGame | null>(null);
-
-    // const changeScene = () => {
-    //
-    //     if(phaserRef.current)
-    //     {     
-    //         const scene = phaserRef.current.scene as TsikaraFirstLevel;
-    //
-    //         if (scene)
-    //         {
-    //             scene.changeScene();
-    //         }
-    //     }
-    // }
-
 
     // Event emitted from the PhaserGame component
     const currentScene = (scene: Phaser.Scene) => {
         console.log(scene)
     }
 
+    const didTapOnRunCode = () => {
+        if (phaserRef.current) {
+            
+        }
+    };
+
+
     return (
         <div className="playground">
             <div className="phaserGameContainer">
-                {/*<p>game should appear here</p>*/}
-
                 <PhaserGame ref={phaserRef} currentActiveScene={currentScene} />
             </div>
 
             <div className="editorContainer">
-                <GeorgianCodeEditor/>
+                <GeorgianCodeEditor code={code} setCode={setCode} />
+            </div>
+            <div>
+                <button onClick={didTapOnRunCode}>Run Code</button>
             </div>
         </div>
     )

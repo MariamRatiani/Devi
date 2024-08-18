@@ -1,14 +1,15 @@
-import { useState } from 'react';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 import 'codemirror/lib/codemirror.css'; 
 import './georgianLanguageMode.ts'
 import 'codemirror/theme/twilight.css';
 
-function GeorgianCodeEditor() {
-    const [code, setCode] = useState('// დაწერე კოდი აქ');
+interface GeorgianCodeEditorProps {
+    code: string;
+    setCode: (code: string) => void;
+}
 
+function GeorgianCodeEditor({ code, setCode }: GeorgianCodeEditorProps) {
     return (
-        
         <CodeMirror
             value={code}
             options={{
