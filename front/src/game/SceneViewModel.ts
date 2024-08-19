@@ -1,3 +1,4 @@
+import { Environment } from "../Interpreter/AST/Statements/ConcreteStatements/Environment";
 import { StatementInterpreter } from "../Interpreter/AST/Statements/StatementInterpreter";
 import { StatementParser } from "../Interpreter/AST/Statements/StatementParser";
 import { Tokenizer } from "../Interpreter/Tokenizer/Tokenizer";
@@ -18,7 +19,8 @@ export class SceneViewModelImpl implements SceneViewModel {
         let tokenizer = new Tokenizer(code)
         let tokens = tokenizer.scanTokens()
 
-        let parser = new StatementParser(tokens)
+        let globalEnvironment = new Environment()
+        let parser = new StatementParser(tokens, globalEnvironment)
         let statements = parser.parse()
 
         let interpreter = new StatementInterpreter(this.scene, statements)
