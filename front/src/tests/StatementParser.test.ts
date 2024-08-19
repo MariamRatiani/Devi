@@ -1,5 +1,5 @@
 import { ExpressionInterpreter } from "../Interpreter/AST/Expressions/ExpressionInterpreter"
-import { VarType } from "../Interpreter/AST/Statements/ConcreteStatements/Environment"
+import { Environment, VarType } from "../Interpreter/AST/Statements/ConcreteStatements/Environment"
 import { ForStatement } from "../Interpreter/AST/Statements/ConcreteStatements/ForStatement"
 import { FuncStatement } from "../Interpreter/AST/Statements/ConcreteStatements/FuncStatement"
 import { IfStatement } from "../Interpreter/AST/Statements/ConcreteStatements/IfStatement"
@@ -156,7 +156,7 @@ describe('Parse Statements', () => {
 function createStmtWithSource(source: string) {
     const tokenizer = new Tokenizer(source)
     const tokens = tokenizer.scanTokens()
-
-    const parser = new StatementParser(tokens)
+    const globalEnv = new Environment()
+    const parser = new StatementParser(tokens, globalEnv)
     return parser.parse()
 }
