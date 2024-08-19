@@ -1,9 +1,25 @@
+export interface IEnvironment {
+    setParentEnvironment(parentEnv: Environment): void;
+    getParentEnvironment(): Environment
+    addOrSetVariable(variable: Variable): void;
+    shouldBeAdded(variable: Variable): boolean;
+    getVariable(name: string): Variable | undefined;
+}
 
-export class Environment {
+export class Environment implements Environment {
     private env: Map<string, Variable>
+    private parentEnv: Environment
 
     constructor() {
         this.env = new Map()
+    }
+
+    setParentEnvironment(parentEnv: Environment) {
+        this.parentEnv = parentEnv
+    }
+
+    getParentEnvironment(): Environment {
+        return this.parentEnv
     }
 
     addOrSetVariable(variable: Variable) {
@@ -20,6 +36,7 @@ export class Environment {
         if (this.env.has(name)) {
             return this.env.get(name)
         }
+        return this.parentEnv.getVariable(name)
     }
 }
 

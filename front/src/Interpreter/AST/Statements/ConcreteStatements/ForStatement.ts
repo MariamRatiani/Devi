@@ -1,6 +1,6 @@
 import { Statement } from "../Interfaces/Statement";
 import { StatementContainer } from "./StatementContainer";
-import { Visitor } from "../Interfaces/Visitor";
+import { StatementVisitor } from "../Interfaces/Visitor";
 
 export class ForStatement extends StatementContainer implements Statement {
     iterationCount: number
@@ -10,7 +10,7 @@ export class ForStatement extends StatementContainer implements Statement {
         this.iterationCount = iterationCount;
     }
 
-    public accept(visitor: Visitor): void {
+    public accept(visitor: StatementVisitor): void {
         visitor.doForStatement(this)
     }
 }

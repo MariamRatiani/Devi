@@ -1,5 +1,5 @@
 import { Statement } from "../Interfaces/Statement";
-import { Visitor } from "../Interfaces/Visitor";
+import { StatementVisitor } from "../Interfaces/Visitor";
 
 /**
  * This class holds child statements. You can add statements and then 
@@ -9,10 +9,11 @@ import { Visitor } from "../Interfaces/Visitor";
  * have more statements in their scope. For exmaple IfStatement, ForStatement.
  * This class also should be used for implementing Root node of the tree.
  */
-export class StatementContainer {
+export abstract class StatementContainer extends Statement {
     statements: Statement[]
 
     constructor(statements: Statement[] = []) {
+        super();
         this.statements = statements;
     }
 
@@ -20,7 +21,7 @@ export class StatementContainer {
         this.statements.push(statement)
     }
 
-    public callStatements(visitor: Visitor) {
+    public callStatements(visitor: StatementVisitor) {
         this.statements.forEach((currentStatement: Statement) => {
             currentStatement.accept(visitor)
         });

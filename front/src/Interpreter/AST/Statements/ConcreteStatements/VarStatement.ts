@@ -1,20 +1,21 @@
 import { Expression } from "../../Expressions/Expression";
 import { Statement } from "../Interfaces/Statement";
-import { Visitor } from "../Interfaces/Visitor";
+import { StatementVisitor } from "../Interfaces/Visitor";
 import { VarType } from "./Environment";
 
-export class VarStatement implements Statement {
+export class VarStatement extends Statement {
     type: VarType
     name: string
     intializer: Expression
 
     constructor(type: VarType, name: string, initalizer: Expression) {
+        super()
         this.type = type 
         this.name = name
         this.intializer = initalizer
     }
     
-    accept(visitor: Visitor): void {
+    accept(visitor: StatementVisitor): void {
         visitor.doVarStatement(this)
     }
 }
