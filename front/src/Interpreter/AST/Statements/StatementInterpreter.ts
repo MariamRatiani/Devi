@@ -1,15 +1,15 @@
-import { stat } from "fs";
 import { ForStatement } from "./ConcreteStatements/ForStatement";
 import { FuncStatement } from "./ConcreteStatements/FuncStatement";
 import { IfStatement } from "./ConcreteStatements/IfStatement";
 import { VarStatement } from "./ConcreteStatements/VarStatement";
 import { WhileStatement } from "./ConcreteStatements/WhileStatement";
 import { Statement } from "./Interfaces/Statement";
-import { Visitor } from "./Interfaces/Visitor";
+import { StatementVisitor } from "./Interfaces/Visitor";
 import { SceneAction } from "./SceneAction";
 import { ExpressionInterpreter } from "../Expressions/ExpressionInterpreter";
+import { Variable, VarValue } from "./ConcreteStatements/Environment";
 
-export class StatementInterpreter implements Visitor {
+export class StatementInterpreter implements StatementVisitor {
     private statements: Statement[] = []
     private scene: SceneInteractable
     private expessionInterpreter = new ExpressionInterpreter()
@@ -57,7 +57,10 @@ export class StatementInterpreter implements Visitor {
     }
     
     doVarStatement(statement: VarStatement): void {
-
+        const parentEnv = statement.getParentEnvironment()
+        this.expessionInterpreter.setCurrentEnvironment(parentEnv)
+        const value = this.expessionInterpreter.interpret(statement.intializer)
+        parentEnv.addOrSetVariable(new Variable(statement.type, statement.name, value as VarValue))
     }
     
     doForStatement(statement: ForStatement): void {
