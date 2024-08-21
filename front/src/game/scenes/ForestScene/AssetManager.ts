@@ -9,6 +9,7 @@ export class AssetManager {
     }
 
     preloadAssets() {
+        this.scene.load.image('comb', '/assets/comb.png')
         this.scene.load.image('backgroundC1', '/assets/Forest/PNG/Backgrounds/background C layer1.png');
         this.scene.load.image('backgroundC2', '/assets/Forest/PNG/Backgrounds/background C layer2.png');
         this.scene.load.image('backgroundC3', '/assets/Forest/PNG/Backgrounds/background C layer3.png');

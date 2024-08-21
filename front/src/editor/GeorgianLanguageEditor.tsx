@@ -5,20 +5,20 @@ import './georgianLanguageMode.ts'
 import 'codemirror/theme/twilight.css';
 
 function GeorgianCodeEditor() {
-    const [code, setCode] = useState('// დაწერე კოდი აქ');
+    // const [code, setCode] = useState('');
 
     return (
         
         <CodeMirror
-            value={code}
+            // value={"marikos"}
             options={{
-                mode: 'georgianLanguage', 
-                theme: 'twilight', 
+                // mode: 'georgianLanguage', 
+                // theme: 'twilight', 
                 lineNumbers: true,
             }}
-            onChange={(_, __, value) => {
-                setCode(value);
-            }}
+            // onChange={(_, __, value) => {
+            //     setCode(value);
+            // }}
         />
     );
 }
