@@ -1,4 +1,4 @@
 interface SceneInteractable {
-    jumpMainPlayer(): boolean
-    moveForwardMainPlayer(): boolean
+    jumpMainPlayer(): Promise<boolean> 
+    moveForwardMainPlayer(): Promise<boolean> 
 }
