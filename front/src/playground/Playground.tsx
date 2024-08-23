@@ -1,7 +1,8 @@
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { IRefPhaserGame, PhaserGame } from '../game/PhaserGame.tsx';
 import './playground.css';
 import GeorgianCodeEditor from "../editor/GeorgianLanguageEditor.tsx";
+import { EventBus } from '../game/EventBus.ts';
 
 function Playground()
 {
@@ -13,12 +14,24 @@ function Playground()
         console.log(scene)
     }
 
+    useEffect(() => {
+        const handleSpaceKeyPress = () => {
+            setCode((prevCode) => prevCode + ' ');  // Append space to the current code
+        };
+
+        EventBus.on('space-key-pressed', handleSpaceKeyPress);
+
+        return () => {
+            EventBus.removeListener('space-key-pressed', handleSpaceKeyPress);
+        };
+    }, []);
+
     const didTapOnRunCode = () => {
         if (phaserRef.current) {
-            
+            console.log(code)
+            phaserRef.current.sceneViewModel?.startCodeExecution(code)
         }
     };
-
 
     return (
         <div className="playground">
