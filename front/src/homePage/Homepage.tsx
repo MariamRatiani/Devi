@@ -1,14 +1,16 @@
-import './animatedStyle.scss'
-// import React from 'react'
+import './animatedStyle.scss';
+// import React from 'react';
 
 // https://github.com/baunov/gradients-bg/blob/main/src/main.ts
 function Homepage() {
-
-
     return (
         <>
             <div className="text-container">
                 DEVI
+            </div>
+            <div className="top-right-buttons">
+                <button className="login-button">Login</button>
+                <button className="signup-button">Sign Up</button>
             </div>
             <div className="gradient-bg">
                 <svg xmlns="http://www.w3.org/2000/svg">
@@ -29,8 +31,11 @@ function Homepage() {
                     <div className="interactive"></div>
                 </div>
             </div>
+            <div className="button-container">
+                <button className="start-button">Start</button>
+            </div>
         </>
     );
 }
 
-export default Homepage
+export default Homepage;
