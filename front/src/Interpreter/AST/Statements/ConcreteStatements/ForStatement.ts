@@ -10,7 +10,7 @@ export class ForStatement extends StatementContainer implements Statement {
         this.iterationCount = iterationCount;
     }
 
-    public accept(visitor: StatementVisitor): void {
-        visitor.doForStatement(this)
+    public async accept(visitor: StatementVisitor): Promise<void> {
+        await visitor.doForStatement(this)
     }
 }

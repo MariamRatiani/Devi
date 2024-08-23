@@ -10,62 +10,66 @@ import { ExpressionInterpreter } from "../Expressions/ExpressionInterpreter";
 import { Variable, VarValue } from "./ConcreteStatements/Environment";
 
 export class StatementInterpreter implements StatementVisitor {
-    private statements: Statement[] = []
-    private scene: SceneInteractable
-    private expessionInterpreter = new ExpressionInterpreter()
+    private statements: Statement[] = [];
+    private scene: SceneInteractable;
+    private expressionInterpreter = new ExpressionInterpreter();
 
     constructor(scene: SceneInteractable, statements: Statement[]) {
-        this.scene = scene
-        this.statements = statements
+        this.scene = scene;
+        this.statements = statements;
     }
 
-    execute() {
-        this.executeStatements(this.statements)
+    async execute() {
+        await this.executeStatements(this.statements);
     }
 
-    executeStatements(statements: Statement[]) {
+    async executeStatements(statements: Statement[]): Promise<void> {
+        console.log('statements: ', statements);
         for (const statement of statements) {
-            statement.accept(this);
+            await statement.accept(this);
         }
     }
 
-    doWhileStatement(statement: WhileStatement) {
-        let conditionValue = this.expessionInterpreter.interpret(statement.condition)
+    async doWhileStatement(statement: WhileStatement): Promise<void> {
+        let conditionValue = this.expressionInterpreter.interpret(statement.condition);
         while (conditionValue) {
-            statement.callStatements(this)
+            await statement.callStatements(this);
+            conditionValue = this.expressionInterpreter.interpret(statement.condition);
         }
     }
 
-    doIfStatement(statement: IfStatement) {
-        let conditionValue = this.expessionInterpreter.interpret(statement.condition)
+    async doIfStatement(statement: IfStatement): Promise<void> {
+        let conditionValue = this.expressionInterpreter.interpret(statement.condition);
         if (conditionValue) {
-            statement.callStatements(this)
+            await statement.callStatements(this);
         }
     }
-    
-    doFuncStatement(statement: FuncStatement) {
+
+    async doFuncStatement(statement: FuncStatement): Promise<void> {
         switch (statement.funcName) {
-            case SceneAction.MOVE_MAIN_CHARACTER: 
-                this.scene.moveForwardMainPlayer()
-                break
+            case SceneAction.MOVE_MAIN_CHARACTER:
+                await this.scene.moveForwardMainPlayer();
+                console.log('did moved');
+                break;
             case SceneAction.JUMP_MAIN_CHARACTER:
-                this.scene.jumpMainPlayer()
-                break
+                await this.scene.jumpMainPlayer();
+                console.log('did jumped');
+                break;
             default:
-                console.log('Invalid action on func') 
+                console.log('Invalid action on func');
         }
     }
-    
-    doVarStatement(statement: VarStatement): void {
-        const parentEnv = statement.getParentEnvironment()
-        this.expessionInterpreter.setCurrentEnvironment(parentEnv)
-        const value = this.expessionInterpreter.interpret(statement.intializer)
-        parentEnv.addOrSetVariable(new Variable(statement.type, statement.name, value as VarValue))
+
+    async doVarStatement(statement: VarStatement): Promise<void> {
+        const parentEnv = statement.getParentEnvironment();
+        this.expressionInterpreter.setCurrentEnvironment(parentEnv);
+        const value = this.expressionInterpreter.interpret(statement.intializer);
+        parentEnv.addOrSetVariable(new Variable(statement.type, statement.name, value as VarValue));
     }
-    
-    doForStatement(statement: ForStatement): void {
+
+    async doForStatement(statement: ForStatement): Promise<void> {
         for (let i = 0; i < statement.iterationCount; i++) {
-            statement.callStatements(this)
+            await statement.callStatements(this);
         }
     }
 }

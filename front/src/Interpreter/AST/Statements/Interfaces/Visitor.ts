@@ -5,9 +5,9 @@ import { VarStatement } from "../ConcreteStatements/VarStatement"
 import { WhileStatement } from "../ConcreteStatements/WhileStatement"
 
 export interface StatementVisitor {
-    doWhileStatement(statement: WhileStatement): void
-    doIfStatement(statement: IfStatement): void
-    doFuncStatement(statement: FuncStatement): void
-    doVarStatement(statement: VarStatement): void
-    doForStatement(statement: ForStatement): void
+    doWhileStatement(statement: WhileStatement): Promise<void>;
+    doIfStatement(statement: IfStatement): Promise<void>;
+    doFuncStatement(statement: FuncStatement): Promise<void>;
+    doVarStatement(statement: VarStatement): Promise<void>;
+    doForStatement(statement: ForStatement): Promise<void>;
 }

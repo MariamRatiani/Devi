@@ -21,9 +21,9 @@ export abstract class StatementContainer extends Statement {
         this.statements.push(statement)
     }
 
-    public callStatements(visitor: StatementVisitor) {
-        this.statements.forEach((currentStatement: Statement) => {
-            currentStatement.accept(visitor)
-        });
+    public async callStatements(visitor: StatementVisitor): Promise<void> {
+        for (const currentStatement of this.statements) {
+            await currentStatement.accept(visitor);
+        }
     }
 }

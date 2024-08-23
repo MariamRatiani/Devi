@@ -15,7 +15,7 @@ export class VarStatement extends Statement {
         this.intializer = initalizer
     }
     
-    accept(visitor: StatementVisitor): void {
-        visitor.doVarStatement(this)
+    async accept(visitor: StatementVisitor): Promise<void> {
+        await visitor.doVarStatement(this)
     }
 }

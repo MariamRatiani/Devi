@@ -7,11 +7,10 @@ export class WhileStatement extends ConditionalStatement {
 
     constructor(statements: Statement[] = [], expression: Expression) {
         super(statements, expression);
-        super(statements, expression);
     }
 
-    public accept(visitor: StatementVisitor): void {
-        visitor.doWhileStatement(this)
+    public async accept(visitor: StatementVisitor): Promise<void> {
+        await visitor.doWhileStatement(this)
     }
     
 }

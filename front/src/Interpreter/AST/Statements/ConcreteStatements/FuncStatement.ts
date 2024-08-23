@@ -9,8 +9,8 @@ export class FuncStatement extends Statement {
         this.funcName = funcName
     }
 
-    accept(visitor: StatementVisitor): void {
-        visitor.doFuncStatement(this)
+    async accept(visitor: StatementVisitor): Promise<void> {
+        await visitor.doFuncStatement(this)
     }
     
 }

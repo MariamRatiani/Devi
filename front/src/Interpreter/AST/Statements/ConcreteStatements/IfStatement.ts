@@ -9,7 +9,7 @@ export class IfStatement extends ConditionalStatement {
         super(statements, expression);
     }
 
-    public accept(visitor: StatementVisitor): void {
-        visitor.doIfStatement(this)
+    public async accept(visitor: StatementVisitor): Promise<void> {
+        await visitor.doIfStatement(this)
     }
 }
