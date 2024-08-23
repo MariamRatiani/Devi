@@ -1,8 +1,6 @@
 import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
-import { okaidia } from '@uiw/codemirror-theme-okaidia';
-import { useState, useEffect, useRef } from 'react';
-import React from 'react';
+import { sublime } from '@uiw/codemirror-theme-sublime';
 
 interface GeorgianCodeEditorProps {
     code: string;
@@ -12,18 +10,19 @@ interface GeorgianCodeEditorProps {
 const extensions = [javascript({ jsx: true })];
 
 function GeorgianCodeEditor({ code, setCode }: GeorgianCodeEditorProps) {
-    return (
-        <CodeMirror
-          value={code}
-          height="200px"
-          theme={okaidia}
-          extensions={extensions}
-          onChange={(value, viewUpdate) => {
-            console.log(value, viewUpdate);  
-            setCode(value);      
-          }}
-        />
-      );
+  return (
+      <CodeMirror
+        value={code}
+        height="100%"
+        theme={sublime}
+        extensions={extensions}
+        onChange={(value, viewUpdate) => {
+          console.log(value, viewUpdate);
+          setCode(value);
+        }}
+        className="CodeMirror" // Apply custom class
+      />
+  );
 }
 
 export default GeorgianCodeEditor;

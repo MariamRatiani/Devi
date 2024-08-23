@@ -28,8 +28,13 @@ function Playground()
 
     const didTapOnRunCode = () => {
         if (phaserRef.current) {
-            console.log(code)
             phaserRef.current.sceneViewModel?.startCodeExecution(code)
+        }
+    };
+
+    const didTapOnResetCode = () => {
+        if (phaserRef.current) {
+            setCode('')
         }
     };
 
@@ -41,12 +46,13 @@ function Playground()
 
             <div className="editorContainer">
                 <GeorgianCodeEditor code={code} setCode={setCode} />
-            </div>
-            <div>
-                <button onClick={didTapOnRunCode}>Run Code</button>
+                <div className="button-container">
+                    <button className="stylish-button" onClick={didTapOnRunCode}>Run Code</button>
+                    <button className="stylish-button" onClick={didTapOnResetCode}>Reset Code</button>
+                </div>
             </div>
         </div>
-    )
+    );
 }
 
 
