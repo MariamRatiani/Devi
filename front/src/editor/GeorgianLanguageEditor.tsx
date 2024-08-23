@@ -1,27 +1,29 @@
-import { UnControlled as CodeMirror } from 'react-codemirror2';
-import 'codemirror/lib/codemirror.css'; 
-import './georgianLanguageMode.ts'
-import 'codemirror/theme/twilight.css';
+import CodeMirror from '@uiw/react-codemirror';
+import { javascript } from '@codemirror/lang-javascript';
+import { okaidia } from '@uiw/codemirror-theme-okaidia';
+import { useState, useEffect, useRef } from 'react';
+import React from 'react';
 
 interface GeorgianCodeEditorProps {
     code: string;
     setCode: (code: string) => void;
 }
 
+const extensions = [javascript({ jsx: true })];
+
 function GeorgianCodeEditor({ code, setCode }: GeorgianCodeEditorProps) {
     return (
         <CodeMirror
-            value={code}
-            options={{
-                mode: 'georgianLanguage', 
-                theme: 'twilight', 
-                lineNumbers: true,
-            }}
-            onChange={(_, __, value) => {
-                setCode(value);
-            }}
+          value={code}
+          height="200px"
+          theme={okaidia}
+          extensions={extensions}
+          onChange={(value, viewUpdate) => {
+            console.log(value, viewUpdate);  
+            setCode(value);      
+          }}
         />
-    );
+      );
 }
 
 export default GeorgianCodeEditor;
