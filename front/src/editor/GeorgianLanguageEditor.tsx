@@ -16,7 +16,7 @@ function GeorgianCodeEditor({ code, setCode }: GeorgianCodeEditorProps) {
         height="100%"
         theme={sublime}
         extensions={extensions}
-        onChange={(value, viewUpdate) => {
+        onChange={(value: string, viewUpdate: any) => {
           console.log(value, viewUpdate);
           setCode(value);
         }}

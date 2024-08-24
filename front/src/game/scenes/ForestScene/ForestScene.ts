@@ -8,6 +8,7 @@ import { CharacterManager } from "./CharacterManager.ts";
 import { calculateScale, setupCamera } from "./utils.ts";
 import { AssetManager } from "./AssetManager.ts";
 import {JUMP_HEIGHT} from "./constants.ts";
+import {RewardText} from "./RewardText.ts";
 
 export class ForestScene extends Scene implements SceneInteractable {
     background1: TileSprite;
@@ -23,7 +24,7 @@ export class ForestScene extends Scene implements SceneInteractable {
     staticPlatforms: Phaser.Physics.Arcade.StaticGroup;
     cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     platforms: Phaser.Physics.Arcade.Group;
-
+    rewards: Phaser.Physics.Arcade.Group
     backgroun1speed: number = 25;
     backgroun2speed: number = 50;
     backgroun3speed: number = 80;
@@ -37,7 +38,10 @@ export class ForestScene extends Scene implements SceneInteractable {
 
     endX: number;
 
+    // reward variables
     characterIsMoving: boolean;
+    // rewardCount: number
+    rewardText: RewardText
 
     constructor() {
         super('ForestScene');
@@ -82,6 +86,9 @@ export class ForestScene extends Scene implements SceneInteractable {
 
         this.backgroundManager = new BackgroundManager(this);
         this.backgroundManager.createBackgrounds();
+        this.rewards = this.physics.add.group()
+        // this.rewardCount = 0
+        this.rewardText = new RewardText(this, 0)
 
         this.createGround();
         this.characterManager = new CharacterManager(this);
