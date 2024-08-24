@@ -11,19 +11,10 @@ import { VarExpr } from "./ConcreteExpressions/VarExpr.ts";
 import { Environment } from "../Statements/ConcreteStatements/Environment.ts";
 
 export class ExpressionInterpreter implements ExpressionVisitor<unknown>  {
-    private globalEnvironment: Environment
-    private localEnvironments: Environment[] = []
+    private currentEnv: Environment
 
-    setGlobalEnvironment(env: Environment) {
-        this.globalEnvironment = env
-    }
-
-    setLocalEnvironments(envs: Environment[]) {
-        this.localEnvironments = envs
-    }
-
-    addLocalEnvironment(env: Environment) {
-        this.localEnvironments.push(env)
+    setCurrentEnvironment(env: Environment) {
+        this.currentEnv = env
     }
 
     interpret(expression: Expression): unknown {
@@ -184,15 +175,7 @@ export class ExpressionInterpreter implements ExpressionVisitor<unknown>  {
     }
 
     visitVarExpr(varExpr: VarExpr): unknown {
-        let variable = this.globalEnvironment.getVariable(varExpr.name.lexeme);
-        if (!variable) {
-            for (const env of this.localEnvironments) {
-                variable = env.getVariable(varExpr.name.lexeme);
-                if (variable) {
-                    break;
-                }
-            }
-        }
+        let variable = this.currentEnv.getVariable(varExpr.name.lexeme);
         return variable?.value;
     }
     

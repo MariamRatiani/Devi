@@ -1,15 +1,16 @@
 import { Statement } from "../Interfaces/Statement";
-import { Visitor } from "../Interfaces/Visitor";
+import { StatementVisitor } from "../Interfaces/Visitor";
 
-export class FuncStatement implements Statement {
+export class FuncStatement extends Statement {
     funcName: string
 
     constructor(funcName: string) {
+        super()
         this.funcName = funcName
     }
 
-    accept(visitor: Visitor): void {
-        visitor.doFuncStatement(this)
+    async accept(visitor: StatementVisitor): Promise<void> {
+        await visitor.doFuncStatement(this)
     }
     
 }

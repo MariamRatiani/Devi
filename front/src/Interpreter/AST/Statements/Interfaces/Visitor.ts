@@ -4,10 +4,10 @@ import { IfStatement } from "../ConcreteStatements/IfStatement"
 import { VarStatement } from "../ConcreteStatements/VarStatement"
 import { WhileStatement } from "../ConcreteStatements/WhileStatement"
 
-export interface Visitor {
-    doWhileStatement(statement: WhileStatement): boolean
-    doIfStatement(statement: IfStatement): boolean
-    doFuncStatement(statement: FuncStatement): boolean
-    doVarStatement(statement: VarStatement): boolean
-    doForStatement(statement: ForStatement): boolean
+export interface StatementVisitor {
+    doWhileStatement(statement: WhileStatement): Promise<void>;
+    doIfStatement(statement: IfStatement): Promise<void>;
+    doFuncStatement(statement: FuncStatement): Promise<void>;
+    doVarStatement(statement: VarStatement): Promise<void>;
+    doForStatement(statement: ForStatement): Promise<void>;
 }

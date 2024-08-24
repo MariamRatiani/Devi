@@ -2,7 +2,7 @@ import { Token } from "../../Tokenizer/Token";
 import { TokenType } from "../../Tokenizer/TokenType";
 import { ExpressionParser } from "../Expressions/ExpressionParser";
 import { ParseError } from "../ParseError";
-import { VarType } from "./ConcreteStatements/Environment";
+import { Environment, VarType } from "./ConcreteStatements/Environment";
 import { VarStatement } from "./ConcreteStatements/VarStatement";
 import { IfStatement } from "./ConcreteStatements/IfStatement";
 import { Statement } from "./Interfaces/Statement";
@@ -13,11 +13,13 @@ import { FuncStatement } from "./ConcreteStatements/FuncStatement";
 
 export class StatementParser {
     private exprParser = new ExpressionParser([])
+    private globalEnv: Environment
     private tokens: Token[] = []
     private current = 0
 
-    constructor(tokens: Token[]) {
+    constructor(tokens: Token[], globalEnv: Environment) {
         this.tokens = tokens
+        this.globalEnv = globalEnv
     }
 
     parse(): Statement[] {
@@ -26,12 +28,18 @@ export class StatementParser {
     
     parseTill(tillClosure: () => boolean) {
         let statements: Statement[] = []
+       
         while (tillClosure()) {
             const stmt = this.parseStatement()
             if (stmt) {
                 statements.push(stmt)
             }
         }
+
+        statements.forEach(stmt => {
+            stmt.setParentEnvironment(this.globalEnv);
+        });
+    
         return statements
     }
 
@@ -56,12 +64,24 @@ export class StatementParser {
 
     parseIfStatement(): Statement { 
         const [childStmts, condition] = this.getArgumentsForConditionalStmt()
-        return new IfStatement(childStmts, condition)
+        const statement = new IfStatement(childStmts, condition)
+
+        childStmts.forEach(stmt => {
+            stmt.setParentEnvironment(statement);
+        });
+
+        return statement
     }
 
     parseWhileStatement(): Statement { 
         const [childStmts, condition] = this.getArgumentsForConditionalStmt()
-        return new WhileStatement(childStmts, condition)
+        const statement = new WhileStatement(childStmts, condition)
+
+        childStmts.forEach(stmt => {
+            stmt.setParentEnvironment(statement);
+        });
+
+        return statement
     }
 
     parseVarStatement(): Statement {
@@ -89,7 +109,13 @@ export class StatementParser {
             throw new ParseError('Expecting { to start if block statements')
         }
         const childStmts = this.parseTill(() => !this.check(TokenType.RIGHT_BRACE))
-        return new ForStatement(childStmts, iterCount)
+
+        const statement = new ForStatement(childStmts, iterCount)
+        childStmts.forEach(stmt => {
+            stmt.setParentEnvironment(statement);
+        });
+
+        return statement
     }
 
     parseFuncStatement(): Statement {

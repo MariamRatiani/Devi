@@ -285,7 +285,7 @@ describe('test variables', () => {
         const expression = parser.parse()
         const interpreter = new ExpressionInterpreter()
         const globalEnvironment = new Environment()
-        interpreter.setGlobalEnvironment(globalEnvironment)
+        interpreter.setCurrentEnvironment(globalEnvironment)
         globalEnvironment.addOrSetVariable(new Variable(VarType.NUMBER, 'ერთი', 1))
     
         const actualValue = interpreter.interpret(expression)
@@ -305,7 +305,7 @@ describe('test variables', () => {
         const expression = parser.parse()
         const interpreter = new ExpressionInterpreter()
         const globalEnvironment = new Environment()
-        interpreter.setGlobalEnvironment(globalEnvironment)
+        interpreter.setCurrentEnvironment(globalEnvironment)
         globalEnvironment.addOrSetVariable(new Variable(VarType.BOOLEAN, 'არის_კედელი', true))
     
         const actualValue = interpreter.interpret(expression)

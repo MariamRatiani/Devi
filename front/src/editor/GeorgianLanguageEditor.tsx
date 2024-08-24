@@ -1,26 +1,28 @@
-import { useState } from 'react';
-import { UnControlled as CodeMirror } from 'react-codemirror2';
-import 'codemirror/lib/codemirror.css'; 
-import './georgianLanguageMode.ts'
-import 'codemirror/theme/twilight.css';
+import CodeMirror from '@uiw/react-codemirror';
+import { javascript } from '@codemirror/lang-javascript';
+import { sublime } from '@uiw/codemirror-theme-sublime';
 
-function GeorgianCodeEditor() {
-    const [code, setCode] = useState('// დაწერე კოდი აქ');
+interface GeorgianCodeEditorProps {
+    code: string;
+    setCode: (code: string) => void;
+}
 
-    return (
-        
-        <CodeMirror
-            value={code}
-            options={{
-                mode: 'georgianLanguage', 
-                theme: 'twilight', 
-                lineNumbers: true,
-            }}
-            onChange={(_, __, value) => {
-                setCode(value);
-            }}
-        />
-    );
+const extensions = [javascript({ jsx: true })];
+
+function GeorgianCodeEditor({ code, setCode }: GeorgianCodeEditorProps) {
+  return (
+      <CodeMirror
+        value={code}
+        height="100%"
+        theme={sublime}
+        extensions={extensions}
+        onChange={(value, viewUpdate) => {
+          console.log(value, viewUpdate);
+          setCode(value);
+        }}
+        className="CodeMirror" // Apply custom class
+      />
+  );
 }
 
 export default GeorgianCodeEditor;
