@@ -1,15 +1,15 @@
 import { Statement } from "../Interfaces/Statement.ts";
-import { Visitor } from "../Interfaces/Visitor.ts";
+import { StatementVisitor } from "../Interfaces/Visitor.ts";
 import { ConditionalStatement } from "./ConditionalStatement.ts";
 import { Expression } from "../../Expressions/Expression.ts";
 
-export class IfStatement extends ConditionalStatement implements Statement {
+export class IfStatement extends ConditionalStatement {
 
     constructor(statements: Statement[] = [], expression: Expression) {
         super(statements, expression);
     }
 
-    public accept(visitor: Visitor): void {
-        visitor.doIfStatement(this)
+    public async accept(visitor: StatementVisitor): Promise<void> {
+        await visitor.doIfStatement(this)
     }
 }

@@ -10,13 +10,14 @@ import { AssetManager } from "./AssetManager.ts";
 import {JUMP_HEIGHT} from "./constants.ts";
 import {RewardText} from "./RewardText.ts";
 
-export class ForestScene extends Scene implements DeviGame {
+export class ForestScene extends Scene implements SceneInteractable {
     background1: TileSprite;
     background2: TileSprite;
     background3: TileSprite;
     background4: TileSprite;
     character: Phaser.Physics.Arcade.Sprite;
     ground: Sprite;
+    spaceKey: Phaser.Input.Keyboard.Key;
 
     lastTile: TileSprite;
     camera: Phaser.Cameras.Scene2D.Camera;
@@ -73,6 +74,11 @@ export class ForestScene extends Scene implements DeviGame {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     create(_data: never) {
+        this.input.keyboard?.addCapture(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        this.spaceKey = this.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        this.input.keyboard?.on('keydown', function (event: { preventDefault: () => void; }) {
+            console.log('Key pressed in Phaser!');
+        });
         this.camera = setupCamera(this, 0x35ff00);
 
         this.staticPlatforms = this.physics.add.staticGroup();
@@ -107,6 +113,10 @@ export class ForestScene extends Scene implements DeviGame {
     }
 
     update(_time: never, delta: number) {
+        if (Phaser.Input.Keyboard.JustDown(this.spaceKey)) {
+            EventBus.emit('space-key-pressed');
+        }
+    
         if (this.lastTile.x < 100) {
             this.finishGame();
             return;
@@ -120,7 +130,7 @@ export class ForestScene extends Scene implements DeviGame {
     }
     
     private testDeviGame() {
-        this.jump()
+        this.jumpMainPlayer()
         // this.move()
     }
 
@@ -131,41 +141,43 @@ export class ForestScene extends Scene implements DeviGame {
     }
 
 
-    jump(): boolean {
-        if (this.characterIsMoving) {
-            return false;
-        }
-
-        this.characterIsMoving = true;
-        this.character.setVelocityY(JUMP_HEIGHT);
-
-        // Use a timer to reset characterIsMoving after the jump
-        this.time.delayedCall(1500, () => {
-            // if (this.character.body.touching.down) {
-                this.characterIsMoving = false;
-            // }
-            }, [], this);
-
-        return true;
-    }
-
-    move(): boolean {
-        if (this.characterIsMoving) {
-            return false;
-        }
-
-        this.characterIsMoving = true;
-
-        this.tweens.add({
-            targets: this.character,
-            x: this.character.x + 100,
-            duration: 1000,
-            ease: 'Power2',
-            onComplete: () => {
-                this.characterIsMoving = false;
+    jumpMainPlayer(): Promise<boolean> {
+        return new Promise((resolve) => {
+            if (this.characterIsMoving) {
+                resolve(false);
+                return;
             }
+    
+            this.characterIsMoving = true;
+            this.character.setVelocityY(JUMP_HEIGHT);
+    
+            this.time.delayedCall(1500, () => {
+                this.characterIsMoving = false;
+                resolve(true);
+            }, [], this);
         });
-
-        return true;
     }
+    
+    moveForwardMainPlayer(): Promise<boolean> {
+        return new Promise((resolve) => {
+            if (this.characterIsMoving) {
+                console.log('----player already moves-----', this.characterIsMoving)
+                resolve(false);
+                return;
+            }
+            console.log('character starts moving', this.characterIsMoving)
+            this.characterIsMoving = true;
+            
+            this.tweens.add({
+                targets: this.character,
+                x: this.character.x + 100,
+                duration: 1000,
+                ease: 'Power2',
+                onComplete: () => {
+                    this.characterIsMoving = false;
+                    resolve(true);
+                }
+            });
+        });
+    }    
 }

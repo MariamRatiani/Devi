@@ -1,16 +1,16 @@
 import { Statement } from "../Interfaces/Statement.ts";
-import { Visitor } from "../Interfaces/Visitor.ts";
+import { StatementVisitor } from "../Interfaces/Visitor.ts";
 import { Expression } from "../../Expressions/Expression.ts";
 import { ConditionalStatement } from "./ConditionalStatement.ts";
 
-export class WhileStatement extends ConditionalStatement implements Statement {
+export class WhileStatement extends ConditionalStatement {
 
     constructor(statements: Statement[] = [], expression: Expression) {
         super(statements, expression);
     }
 
-    public accept(visitor: Visitor): void {
-        visitor.doWhileStatement(this)
+    public async accept(visitor: StatementVisitor): Promise<void> {
+        await visitor.doWhileStatement(this)
     }
     
 }
