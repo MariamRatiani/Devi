@@ -4,19 +4,37 @@ import './playground.css';
 import GeorgianCodeEditor from "../editor/GeorgianLanguageEditor.tsx";
 import { EventBus } from '../game/EventBus.ts';
 
-function Playground()
-{
+function Playground() {
     const [code, setCode] = useState('// დაწერე კოდი აქ');
     const phaserRef = useRef<IRefPhaserGame | null>(null);
+    const editorRef = useRef<any>(null);  // Adjusted the type for editorRef
 
     // Event emitted from the PhaserGame component
     const currentScene = (scene: Phaser.Scene) => {
-        console.log(scene)
-    }
+        console.log(scene);
+    };
 
     useEffect(() => {
         const handleSpaceKeyPress = () => {
-            setCode((prevCode) => prevCode + ' ');  // Append space to the current code
+            if (editorRef.current) {
+                // Capture the current cursor position
+                const cursorPosition = editorRef.current.getCursorPosition();
+                console.log('Cursor position:', cursorPosition);
+
+                // Update the code and maintain cursor position
+                setCode((prevCode) => {
+                    const newCode = prevCode.substring(0, cursorPosition) + ' ' + prevCode.substring(cursorPosition);
+
+                    // Schedule setting the cursor after the code updates
+                    setTimeout(() => {
+                        if (editorRef.current) {
+                            editorRef.current.setCursorPosition(cursorPosition + 1);  // +1 to account for added space
+                        }
+                    }, 0);
+
+                    return newCode;
+                });
+            }
         };
 
         EventBus.on('space-key-pressed', handleSpaceKeyPress);
@@ -28,14 +46,12 @@ function Playground()
 
     const didTapOnRunCode = () => {
         if (phaserRef.current) {
-            phaserRef.current.sceneViewModel?.startCodeExecution(code)
+            phaserRef.current.sceneViewModel?.startCodeExecution(code);
         }
     };
 
     const didTapOnResetCode = () => {
-        if (phaserRef.current) {
-            setCode('')
-        }
+        setCode('');
     };
 
     return (
@@ -45,7 +61,7 @@ function Playground()
             </div>
 
             <div className="editorContainer">
-                <GeorgianCodeEditor code={code} setCode={setCode} />
+                <GeorgianCodeEditor ref={editorRef} code={code} setCode={setCode} />
                 <div className="button-container">
                     <button className="stylish-button" onClick={didTapOnRunCode}>Run Code</button>
                     <button className="stylish-button" onClick={didTapOnResetCode}>Reset Code</button>
@@ -55,5 +71,4 @@ function Playground()
     );
 }
 
-
-export default Playground
+export default Playground;
