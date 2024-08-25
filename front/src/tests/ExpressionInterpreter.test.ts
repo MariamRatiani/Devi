@@ -286,7 +286,7 @@ describe('test variables', () => {
         const interpreter = new ExpressionInterpreter()
         const globalEnvironment = new Environment()
         interpreter.setCurrentEnvironment(globalEnvironment)
-        globalEnvironment.addOrSetVariable(new Variable(VarType.NUMBER, 'ერთი', 1))
+        globalEnvironment.addVariable(new Variable(VarType.NUMBER, 'ერთი', 1))
     
         const actualValue = interpreter.interpret(expression)
         expect(actualValue).toBe(2)
@@ -306,7 +306,7 @@ describe('test variables', () => {
         const interpreter = new ExpressionInterpreter()
         const globalEnvironment = new Environment()
         interpreter.setCurrentEnvironment(globalEnvironment)
-        globalEnvironment.addOrSetVariable(new Variable(VarType.BOOLEAN, 'არის_კედელი', true))
+        globalEnvironment.addVariable(new Variable(VarType.BOOLEAN, 'არის_კედელი', true))
     
         const actualValue = interpreter.interpret(expression)
         expect(actualValue).toBe(true)

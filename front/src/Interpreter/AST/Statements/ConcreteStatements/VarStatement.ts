@@ -19,3 +19,18 @@ export class VarStatement extends Statement {
         await visitor.doVarStatement(this)
     }
 }
+
+export class VarAsignStatement extends Statement {
+    name: string
+    asigner: Expression
+
+    constructor(name: string, asigner: Expression) {
+        super()
+        this.name = name
+        this.asigner = asigner
+    }
+
+    async accept(visitor: StatementVisitor): Promise<void> {
+        await visitor.doVarAsignStatement(this)
+    }
+}

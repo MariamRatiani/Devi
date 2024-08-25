@@ -3,7 +3,7 @@ import { TokenType } from "../../Tokenizer/TokenType";
 import { ExpressionParser } from "../Expressions/ExpressionParser";
 import { ParseError } from "../ParseError";
 import { Environment, VarType } from "./ConcreteStatements/Environment";
-import { VarStatement } from "./ConcreteStatements/VarStatement";
+import { VarAsignStatement, VarStatement } from "./ConcreteStatements/VarStatement";
 import { IfStatement } from "./ConcreteStatements/IfStatement";
 import { Statement } from "./Interfaces/Statement";
 import { Expression } from "../Expressions/Expression";
@@ -56,7 +56,12 @@ export class StatementParser {
             case TokenType.FOR:
                 return this.parseForStatement();
             case TokenType.IDENTIFIER:
-                return this.parseFuncStatement();
+                const identifierName = this.previous().lexeme
+                if (this.peek().type == TokenType.EQUAL) {
+                    return this.parseVarAsignStatement(identifierName)
+                } else {
+                    return this.parseFuncStatement(identifierName);
+                }
             default:
                 
         }
@@ -102,6 +107,21 @@ export class StatementParser {
 
         return new VarStatement(varType, name, initializer)
     }
+
+    parseVarAsignStatement(varName: string): Statement {
+        this.consume(TokenType.EQUAL, 'expecting = for function call')
+        const strIdx = this.current
+        while (!this.match(TokenType.SEMICOLON)) {
+        }
+        const endIdx = this.current
+        const exprTokens = this.tokens.slice(strIdx, endIdx - 1)
+        exprTokens.push(new Token(TokenType.EOF, '', ''))
+        
+        this.exprParser.setTokens(exprTokens)
+        const asigner = this.exprParser.parse()
+
+        return new VarAsignStatement(varName, asigner)
+    }
     
     parseForStatement(): Statement {
         const iterCount = this.advance().literal as number
@@ -118,8 +138,7 @@ export class StatementParser {
         return statement
     }
 
-    parseFuncStatement(): Statement {
-        const funcName = this.previous().lexeme
+    parseFuncStatement(funcName: string): Statement {
         this.consume(TokenType.LEFT_PAREN, 'expecting ( for function call')
         this.consume(TokenType.RIGHT_PAREN, 'expecting ) for function call')
         return new FuncStatement(funcName)

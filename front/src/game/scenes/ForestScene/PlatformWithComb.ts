@@ -9,20 +9,21 @@ export class PlatformWithComb {
     constructor(scene: ForestScene, x: number, y: number, platformKey: string, combKey: string, combOffsetY: number) {
         this.scene = scene
         this.platform = scene.physics.add.sprite(x, y, platformKey);
-        this.platform.body.setAllowGravity(false);
-        this.platform.body.setImmovable(true);
-        this.platform.body.setSize(this.platform.width, this.platform.height);
+        this.platform?.body?.setAllowGravity(false);
+        this.platform?.body?.setImmovable(true);
+        this.platform?.body?.setSize(this.platform.width, this.platform.height);
 
         const combX = x;
         const combY = y - 50 - combOffsetY;
         this.comb = scene.physics.add.sprite(combX, combY, combKey);
         this.comb.setScale(0.04);
-        this.comb.body.setAllowGravity(false);
-        this.comb.body.setImmovable(true);
+        this.comb?.body?.setAllowGravity(false);
+        this.comb?.body?.setImmovable(true);
 
-        scene.add.existing(this.platform);
-        scene.add.existing(this.comb);
+        scene.physics.add.existing(this.platform);
+        scene.physics.add.existing(this.comb);
 
+        this.scene.physics.add.collider(this.scene.character, this.platform);
         this.scene.physics.add.overlap(this.scene.character, this.comb, this.collectComb, null, this);
     }
 

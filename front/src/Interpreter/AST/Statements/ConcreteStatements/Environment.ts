@@ -22,14 +22,22 @@ export class Environment implements Environment {
         return this.parentEnv
     }
 
-    addOrSetVariable(variable: Variable) {
-        if (this.shouldBeAdded(variable)) {
-            this.env.set(variable.name, variable);
+    addVariable(variable: Variable) {
+        this.env.set(variable.name, variable);
+    }
+
+    setVariable(varName: string, varValue: VarValue): boolean {
+        if (this.variableDoExist(varName)) {
+            const variable = this.env.get(varName)
+            this.env.set(varName, new Variable(variable?.type!, varName, varValue));
+            return true
+        } else {
+            return false
         }
     }
 
-    shouldBeAdded(variable: Variable): boolean {
-        return (!this.env.has(variable.name)) || (this.getVariable(variable.name)?.type == variable.type)
+    variableDoExist(varName: string): boolean {
+        return this.env.has(varName)
     }
 
     getVariable(name: string): Variable | undefined {

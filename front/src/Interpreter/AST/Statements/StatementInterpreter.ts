@@ -1,7 +1,7 @@
 import { ForStatement } from "./ConcreteStatements/ForStatement";
 import { FuncStatement } from "./ConcreteStatements/FuncStatement";
 import { IfStatement } from "./ConcreteStatements/IfStatement";
-import { VarStatement } from "./ConcreteStatements/VarStatement";
+import { VarAsignStatement, VarStatement } from "./ConcreteStatements/VarStatement";
 import { WhileStatement } from "./ConcreteStatements/WhileStatement";
 import { Statement } from "./Interfaces/Statement";
 import { StatementVisitor } from "./Interfaces/Visitor";
@@ -17,6 +17,7 @@ export class StatementInterpreter implements StatementVisitor {
     constructor(scene: SceneInteractable, statements: Statement[]) {
         this.scene = scene;
         this.statements = statements;
+        console.log(statements)
     }
 
     async execute() {
@@ -43,6 +44,7 @@ export class StatementInterpreter implements StatementVisitor {
         if (conditionValue) {
             await statement.callStatements(this);
         }
+        console.log(statement)
     }
 
     async doFuncStatement(statement: FuncStatement): Promise<void> {
@@ -64,7 +66,15 @@ export class StatementInterpreter implements StatementVisitor {
         const parentEnv = statement.getParentEnvironment();
         this.expressionInterpreter.setCurrentEnvironment(parentEnv);
         const value = this.expressionInterpreter.interpret(statement.intializer);
-        parentEnv.addOrSetVariable(new Variable(statement.type, statement.name, value as VarValue));
+        parentEnv.addVariable(new Variable(statement.type, statement.name, value as VarValue));
+    }
+
+    async doVarAsignStatement(statement: VarAsignStatement): Promise<void> {
+        const parentEnv = statement.getParentEnvironment();
+        this.expressionInterpreter.setCurrentEnvironment(parentEnv);
+        const value = this.expressionInterpreter.interpret(statement.asigner);
+        parentEnv.setVariable(statement.name, value as VarValue);
+        console.log(parentEnv)
     }
 
     async doForStatement(statement: ForStatement): Promise<void> {
