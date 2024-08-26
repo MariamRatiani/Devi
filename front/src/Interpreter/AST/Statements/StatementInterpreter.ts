@@ -7,7 +7,8 @@ import { Statement } from "./Interfaces/Statement";
 import { StatementVisitor } from "./Interfaces/Visitor";
 import { SceneAction } from "./SceneAction";
 import { ExpressionInterpreter } from "../Expressions/ExpressionInterpreter";
-import { Variable, VarValue } from "./ConcreteStatements/Environment";
+import {Environment, Variable, VarValue} from "./ConcreteStatements/Environment";
+import {Expression} from "../Expressions/Expression.ts";
 
 export class StatementInterpreter implements StatementVisitor {
     private statements: Statement[] = [];
@@ -70,16 +71,22 @@ export class StatementInterpreter implements StatementVisitor {
     }
 
     async doVarAsignStatement(statement: VarAsignStatement): Promise<void> {
-        const parentEnv = statement.getParentEnvironment();
-        this.expressionInterpreter.setCurrentEnvironment(parentEnv);
-        const value = this.expressionInterpreter.interpret(statement.asigner);
-        parentEnv.setVariable(statement.name, value as VarValue);
-        console.log(parentEnv)
+        this.searchParentAndSet(statement.getParentEnvironment(), statement.name, statement.asigner)
     }
 
     async doForStatement(statement: ForStatement): Promise<void> {
         for (let i = 0; i < statement.iterationCount; i++) {
             await statement.callStatements(this);
+        }
+    }
+    
+    private searchParentAndSet(parentEnv: Environment | undefined, varName: string, asigner: Expression) {
+        if (parentEnv != null || parentEnv != undefined) {
+            this.expressionInterpreter.setCurrentEnvironment(parentEnv);
+            const value = this.expressionInterpreter.interpret(asigner);
+            if (!parentEnv.setVariable(varName, value as VarValue)) {
+                this.searchParentAndSet(parentEnv.getParentEnvironment(), varName, asigner)
+            }
         }
     }
 }
