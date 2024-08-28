@@ -1,7 +1,7 @@
 import React, { useImperativeHandle, useRef } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
-import { sublime } from '@uiw/codemirror-theme-sublime';
+import {sublime} from "@uiw/codemirror-theme-sublime";
 
 interface GeorgianCodeEditorProps {
     code: string;
@@ -50,7 +50,8 @@ const GeorgianCodeEditor = React.forwardRef((props: GeorgianCodeEditorProps, ref
             onChange={(value: string) => {
                 setCode(value);
             }}
-            className="CodeMirror" // Apply custom class
+            className="CodeMirror"
+            style={{ fontSize: '18px' }}
         />
     );
 });
