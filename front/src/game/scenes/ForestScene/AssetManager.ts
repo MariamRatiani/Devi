@@ -9,6 +9,8 @@ export class AssetManager {
     }
 
     preloadAssets() {
+        
+        this.loadCharacterFrames()
         this.scene.load.image('comb', '/assets/comb.png')
         this.scene.load.image('backgroundC1', '/assets/Forest/PNG/Backgrounds/background C layer1.png');
         this.scene.load.image('backgroundC2', '/assets/Forest/PNG/Backgrounds/background C layer2.png');
@@ -29,4 +31,16 @@ export class AssetManager {
             console.log('All assets loaded');
         });
     }
+    
+    private loadCharacterFrames() {
+        this.scene.load.image('boyWithBull1', 'assets/character_frames/boyWithBull1.png');
+        this.scene.load.image('boyWithBull2', 'assets/character_frames/boyWithBull2.png');
+        this.scene.load.image('boyWithBull3', 'assets/character_frames/boyWithBull3.png');
+        this.scene.load.image('boyWithBull4', 'assets/character_frames/boyWithBull4.png');
+        this.scene.load.image('boyWithBull5', 'assets/character_frames/boyWithBull5.png');
+        this.scene.load.image('boyWithBull6', 'assets/character_frames/boyWithBull6.png');
+        this.scene.load.image('boyWithBull7', 'assets/character_frames/boyWithBull7.png');
+
+    }
+    
 }

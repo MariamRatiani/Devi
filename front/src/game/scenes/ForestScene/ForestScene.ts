@@ -92,6 +92,7 @@ export class ForestScene extends Scene implements SceneInteractable {
 
         this.createGround();
         this.characterManager = new CharacterManager(this);
+        this.characterManager.createFrames()
         this.characterManager.createCharacter();
         this.platformManager = new PlatformManager(this);
         // this.createPlatforms()
@@ -162,6 +163,9 @@ export class ForestScene extends Scene implements SceneInteractable {
             console.log('character starts moving', this.characterIsMoving)
             this.characterIsMoving = true;
             
+            // Play the running animation
+            this.character.play('boyRun');
+
             this.tweens.add({
                 targets: this.character,
                 x: this.character.x + 100,

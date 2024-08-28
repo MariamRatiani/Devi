@@ -4,5 +4,6 @@ export const PLATFORMS_VELOCITY: number = 50
 
 export const JUMP_HEIGHT: number = -300; // Define a jump height (negative for upward movement)
 export const JUMPING_FORWARD_DISTANCE: number = 200
+export const INITIAL_CHARACTER_X: number = 20
 
 export const JUMP_DURATION: number = 1500

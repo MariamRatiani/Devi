@@ -55,4 +55,6 @@ export class PlatformManager {
             this.scene.physics.add.collider(this.scene.character, platformWithComb.platform);
         });
     }
+    
+   
 }

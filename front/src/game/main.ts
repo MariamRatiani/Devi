@@ -1,6 +1,4 @@
 import { AUTO, Game } from 'phaser';
-import {TsikaraFirstLevel} from "./scenes/TsikaraSceneFirstLevel";
-import {MossyScene} from "./scenes/MossyScene.ts";
 import {ForestScene} from "./scenes/ForestScene/ForestScene.ts";
 
 //  Find out more information about the Game Config at:
@@ -21,8 +19,6 @@ const config: Phaser.Types.Core.GameConfig = {
     },
     scene: [
         ForestScene,
-        MossyScene,
-        TsikaraFirstLevel,
     ]
 };
 
