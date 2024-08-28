@@ -29,14 +29,31 @@ export class ExplosionManager {
     }
 
     createExplosion(x: number, y: number) {
-        const explosionSprite = this.scene.physics.add.staticSprite(x, y, 'explosion_frame_1');
+        const explosionSprite = this.scene.physics.add.sprite(x, y, 'explosion_frame_1');
         explosionSprite.setVisible(false); // Hide until triggered
+        explosionSprite.body?.setAllowGravity(false);
+        explosionSprite.body?.setImmovable(true);
+
+        const explosionScale = 0.5
+        explosionSprite.setScale(explosionScale, explosionScale)
+
+        const width = explosionSprite.width * explosionScale;
+        const height = explosionSprite.height * explosionScale;
+        explosionSprite.body.setSize(width, height)
+
+        explosionSprite.setData('triggered', false); // Flag to check if triggered
         this.explosions.push(explosionSprite);
 
         // Add collision detection
-        this.scene.physics.add.overlap(this.scene.character, explosionSprite, () => {
+        this.scene.physics.add.overlap(this.scene.character, explosionSprite, this.handleOverlap, null, this);
+    }
+
+    handleOverlap(character: Phaser.Physics.Arcade.Sprite, explosionSprite: Phaser.Physics.Arcade.Sprite) {
+        // Check if the explosion has already been triggered
+        if (!explosionSprite.getData('triggered')) {
             this.triggerExplosion(explosionSprite);
-        });
+            explosionSprite.setData('triggered', true); // Set as triggered
+        }
     }
 
     triggerExplosion(explosionSprite: Phaser.Physics.Arcade.Sprite) {
@@ -44,6 +61,7 @@ export class ExplosionManager {
         explosionSprite.play('explosionAnim');
         explosionSprite.on('animationcomplete', () => {
             explosionSprite.setVisible(false); // Hide after animation completes
+            explosionSprite.body.enable = false; // Disable physics body to prevent further triggers
             // Optionally, destroy the sprite if it should only explode once
             // explosionSprite.destroy();
         });
@@ -62,7 +80,7 @@ export class ExplosionManager {
     }
 
     public createExplosions() {
-        this.createExplosion(490, this.scene.cameras.main.height - 130); // Add an explosion on the ground at (490, 130)
+        this.createExplosion(590, this.scene.cameras.main.height - 160); // Add an explosion on the ground
         // You can add more explosions if needed
     }
 }
