@@ -71,3 +71,86 @@ body {
 .stylish-button:hover {
     background-color: #0056b3;
 }
+
+.playground {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    position: relative; /* Make sure the button can be positioned relative to this container */
+}
+
+.editorContainer {
+    flex: 1.5;
+    width: 100%;
+    height: 100%;
+    background-color: #0e1a3a;
+    display: flex;
+    flex-direction: column;
+    position: relative; /* Added for positioning child elements */
+}
+
+.help-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #ffc107;
+    border: none;
+    color: #000;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 50%;
+    font-size: 14px;
+    z-index: 10; /* Ensure it's on top of other elements */
+}
+
+.stylish-button {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.stylish-button:hover {
+    background-color: #0056b3;
+}
+
+.button-container {
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    position: relative; 
+}
+
+.notification {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #02070c;
+    color: #c81d1d;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+    z-index: 1100;
+    opacity: 1;
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.notification-hidden {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+    pointer-events: none; 
+}
+
