@@ -26,6 +26,8 @@ export class AssetManager {
         this.scene.load.image('tile6', '/assets/Forest/Platforms/tile6.png');
         this.scene.load.image('tile7', '/assets/Forest/Platforms/tile7.png');
 
+        this.scene.load.image('heart', '/assets/heart.png')
+
         this.loadExplotion()
         
         // Add a callback to log when assets are done loading

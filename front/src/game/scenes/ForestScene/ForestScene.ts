@@ -7,9 +7,10 @@ import { BackgroundManager } from "./BackgroundManager.ts";
 import { CharacterManager } from "./CharacterManager.ts";
 import { calculateScale, setupCamera } from "./utils.ts";
 import { AssetManager } from "./AssetManager.ts";
-import {JUMP_HEIGHT, JUMPING_X} from "./constants.ts";
-import {RewardText} from "./RewardText.ts";
+import {JUMP_HEIGHT} from "./constants.ts";
+import {RewardManager} from "./RewardManager.ts";
 import {ExplosionManager} from "./ExplosionManager.ts";
+import {LivesManager} from "./LivesManager.ts";
 
 export class ForestScene extends Scene implements SceneInteractable {
     background1: TileSprite;
@@ -41,9 +42,11 @@ export class ForestScene extends Scene implements SceneInteractable {
     // reward variables
     characterIsMoving: boolean;
     // rewardCount: number
-    rewardText: RewardText
+    rewardManager: RewardManager
     explosionManager: ExplosionManager;
 
+    livesManager: LivesManager
+    
     constructor() {
         super('ForestScene');
         this.characterIsMoving = false;
@@ -89,7 +92,7 @@ export class ForestScene extends Scene implements SceneInteractable {
         this.backgroundManager.createBackgrounds();
         this.rewards = this.physics.add.group()
         // this.rewardCount = 0
-        this.rewardText = new RewardText(this, 0)
+        this.rewardManager = new RewardManager(this, 0)
 
         this.createGround();
         this.characterManager = new CharacterManager(this);
@@ -99,9 +102,8 @@ export class ForestScene extends Scene implements SceneInteractable {
         // this.createPlatforms()
         this.platformManager.createPlatforms(this);
 
-        //dont know if we need these 2 lines
-        // this.physics.add.existing(this.character);
-        // this.camera.startFollow(this.character, true, 0.1, 0.0);
+        //სიცოცხლეები
+        this.livesManager = new LivesManager(this, 3);
 
         this.platformManager.setColliderToPlatforms();
         this.physics.add.collider(this.character, this.staticPlatforms);
@@ -137,6 +139,7 @@ export class ForestScene extends Scene implements SceneInteractable {
 
     handleCharacterDamage() {
         console.log('Character takes damage!');
+        this.livesManager.reduceLife()
         // Implement the logic to reduce health or other damage effects
     }
     

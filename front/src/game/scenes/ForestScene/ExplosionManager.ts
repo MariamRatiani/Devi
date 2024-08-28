@@ -30,7 +30,7 @@ export class ExplosionManager {
 
     createExplosion(x: number, y: number) {
         const explosionSprite = this.scene.physics.add.sprite(x, y, 'explosion_frame_1');
-        explosionSprite.setVisible(false); // Hide until triggered
+        // explosionSprite.setVisible(false); // Hide until triggered
         explosionSprite.body?.setAllowGravity(false);
         explosionSprite.body?.setImmovable(true);
 
@@ -80,7 +80,7 @@ export class ExplosionManager {
     }
 
     public createExplosions() {
-        this.createExplosion(590, this.scene.cameras.main.height - 160); // Add an explosion on the ground
+        this.createExplosion(890, this.scene.cameras.main.height - 160); // Add an explosion on the ground
         // You can add more explosions if needed
     }
 }

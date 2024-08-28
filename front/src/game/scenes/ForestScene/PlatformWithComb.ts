@@ -17,7 +17,7 @@ export class PlatformWithComb {
         const combY = y - 50 - combOffsetY;
         this.comb = scene.physics.add.sprite(combX, combY, combKey);
         this.comb.setScale(0.04);
-        this.comb?.body?.setAllowGravity(false);
+        this.comb.body?.setAllowGravity(false);
         this.comb?.body?.setImmovable(true);
 
         scene.physics.add.existing(this.platform);
@@ -33,17 +33,21 @@ export class PlatformWithComb {
     }
 
     public setVelocityX(velocityX: number) {
-        this.platform.body.setVelocityX(velocityX);
-        this.comb.body.setVelocityX(velocityX);
+        this.platform.body?.setVelocityX(velocityX);
+        this.comb.body?.setVelocityX(velocityX);
     }
 
     private collectComb(character: Phaser.Physics.Arcade.Sprite, comb: Phaser.Physics.Arcade.Sprite) {
         comb.setVisible(false); // Make the comb invisible
         comb.body.enable = false; // Disable the comb's physics body
         // this.scene.rewardCount += 1;
-        this.scene.rewardText.incrementRewardCount();
+        this.scene.rewardManager.incrementRewardCount();
 
     }
+    
+    // public destroyComb() {
+    //     this.comb = 
+    // }
 
     public update(delta: number) {
         const moveAmount = PLATFORMS_VELOCITY / delta;

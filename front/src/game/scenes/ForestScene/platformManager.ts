@@ -24,12 +24,13 @@ export class PlatformManager {
     }
 
     private createPlatformWithComb(index: integer) {
+        
         const xCoordinate = this.startingCoordinateOfPlatform + index * this.distanceBetweenPlatforms;
         const characterHeight = this.scene.character.displayHeight;
         const y = this.groundTop - characterHeight - 150 * heights[index];
         const platformKey = 'tile3'
             // = index % 2 === 0 ? 'tile1' : 'tile3';
-
+        
         const platformWithComb = new PlatformWithComb(this.scene, xCoordinate, y, platformKey, 'comb', this.combDistanceFromPlatform);
         this.platformsWithCombs.push(platformWithComb);
 
