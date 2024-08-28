@@ -89,6 +89,17 @@ export class StatementParser {
         return statement
     }
 
+    parseForStatement(): Statement {
+        const [childStmts, iterationCount] = this.getArgumentsForConditionalStmt()
+        const statement = new ForStatement(childStmts, iterationCount)
+
+        childStmts.forEach(stmt => {
+            stmt.setParentEnvironment(statement);
+        });
+
+        return statement
+    }
+
     parseVarStatement(): Statement {
         const varTypeRawValue = this.previous().lexeme
         const varType = varTypeRawValue as VarType;
@@ -123,21 +134,6 @@ export class StatementParser {
         return new VarAsignStatement(varName, asigner)
     }
     
-    parseForStatement(): Statement {
-        const iterCount = this.advance().literal as number
-        if (!this.check(TokenType.LEFT_BRACE)) {
-            throw new ParseError('Expecting { to start if block statements')
-        }
-        const childStmts = this.parseTill(() => !this.check(TokenType.RIGHT_BRACE))
-
-        const statement = new ForStatement(childStmts, iterCount)
-        childStmts.forEach(stmt => {
-            stmt.setParentEnvironment(statement);
-        });
-
-        return statement
-    }
-
     parseFuncStatement(funcName: string): Statement {
         this.consume(TokenType.LEFT_PAREN, 'expecting ( for function call')
         this.consume(TokenType.RIGHT_PAREN, 'expecting ) for function call')
