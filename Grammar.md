@@ -29,7 +29,7 @@ WhileStatement:
 ```
 ForStatement:
 ```
-გაიმეორე  *IntegerConstant* { 
+გაიმეორე  (*Expression*) { 
 *Statements*
 }
 ```
