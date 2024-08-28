@@ -26,12 +26,20 @@ export class AssetManager {
         this.scene.load.image('tile6', '/assets/Forest/Platforms/tile6.png');
         this.scene.load.image('tile7', '/assets/Forest/Platforms/tile7.png');
 
+        this.loadExplotion()
+        
         // Add a callback to log when assets are done loading
         this.scene.load.on('complete', () => {
             console.log('All assets loaded');
         });
     }
     
+    private loadExplotion()  {
+        for (let i = 1; i <= 8; i++) {
+            this.scene.load.image(`explosion_frame_${i}`, `assets/explosion/explosion_frame_transparent_${i}.png`);
+        }
+
+    }
     private loadCharacterFrames() {
         this.scene.load.image('boyWithBull1', 'assets/character_frames/boyWithBull1.png');
         this.scene.load.image('boyWithBull2', 'assets/character_frames/boyWithBull2.png');

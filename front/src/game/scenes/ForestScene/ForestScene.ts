@@ -9,6 +9,7 @@ import { calculateScale, setupCamera } from "./utils.ts";
 import { AssetManager } from "./AssetManager.ts";
 import {JUMP_HEIGHT, JUMPING_X} from "./constants.ts";
 import {RewardText} from "./RewardText.ts";
+import {ExplosionManager} from "./ExplosionManager.ts";
 
 export class ForestScene extends Scene implements SceneInteractable {
     background1: TileSprite;
@@ -29,7 +30,6 @@ export class ForestScene extends Scene implements SceneInteractable {
     backgroun2speed: number = 50;
     backgroun3speed: number = 80;
     backgroun4speed: number = 100;
-    platformsSpeed: number = 120;
 
     platformManager: PlatformManager;
     backgroundManager: BackgroundManager;
@@ -42,6 +42,7 @@ export class ForestScene extends Scene implements SceneInteractable {
     characterIsMoving: boolean;
     // rewardCount: number
     rewardText: RewardText
+    explosionManager: ExplosionManager;
 
     constructor() {
         super('ForestScene');
@@ -107,7 +108,11 @@ export class ForestScene extends Scene implements SceneInteractable {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
         this.cursors = this.input.keyboard.createCursorKeys();
-
+        
+        // აფეთქებააა
+        this.explosionManager = new ExplosionManager(this);
+        this.explosionManager.createAnimations();  
+        this.explosionManager.createExplosions()
         EventBus.emit('current-scene-ready', this);
 
     }
@@ -124,11 +129,18 @@ export class ForestScene extends Scene implements SceneInteractable {
 
         // update movements
         // this.characterManager.updateCharacterMovement();
-
         this.backgroundManager.updateBackgroundMovement(delta);
         this.platformManager.updatePlatformsPosition(delta);
+        this.explosionManager.updateExplosionsPosition(delta);
+
+    }
+
+    handleCharacterDamage() {
+        console.log('Character takes damage!');
+        // Implement the logic to reduce health or other damage effects
     }
     
+
     private finishGame() {
         this.input.keyboard?.shutdown();
         this.character.body?.setVelocityX(0);
@@ -168,7 +180,7 @@ export class ForestScene extends Scene implements SceneInteractable {
             
             // Play the running animation
             this.character.play('boyRun');
-
+            // this.characterManager.updateCharacterMovement()
             this.tweens.add({
                 targets: this.character,
                 x: this.character.x + 100,
