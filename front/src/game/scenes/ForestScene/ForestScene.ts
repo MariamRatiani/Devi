@@ -7,7 +7,7 @@ import { BackgroundManager } from "./BackgroundManager.ts";
 import { CharacterManager } from "./CharacterManager.ts";
 import { calculateScale, setupCamera } from "./utils.ts";
 import { AssetManager } from "./AssetManager.ts";
-import {JUMP_HEIGHT} from "./constants.ts";
+import {JUMP_HEIGHT, JUMPING_X} from "./constants.ts";
 import {RewardText} from "./RewardText.ts";
 
 export class ForestScene extends Scene implements SceneInteractable {
@@ -108,7 +108,6 @@ export class ForestScene extends Scene implements SceneInteractable {
         this.cursors = this.input.keyboard.createCursorKeys();
 
         EventBus.emit('current-scene-ready', this);
-        this.testDeviGame()
 
     }
 
@@ -129,11 +128,6 @@ export class ForestScene extends Scene implements SceneInteractable {
         this.platformManager.updatePlatformsPosition(delta);
     }
     
-    private testDeviGame() {
-        this.jumpMainPlayer()
-        // this.move()
-    }
-
     private finishGame() {
         this.input.keyboard?.shutdown();
         this.character.body?.setVelocityX(0);
@@ -147,10 +141,9 @@ export class ForestScene extends Scene implements SceneInteractable {
                 resolve(false);
                 return;
             }
-    
+
             this.characterIsMoving = true;
             this.character.setVelocityY(JUMP_HEIGHT);
-    
             this.time.delayedCall(1500, () => {
                 this.characterIsMoving = false;
                 resolve(true);
@@ -158,6 +151,7 @@ export class ForestScene extends Scene implements SceneInteractable {
         });
     }
     
+   
     moveForwardMainPlayer(): Promise<boolean> {
         return new Promise((resolve) => {
             if (this.characterIsMoving) {
