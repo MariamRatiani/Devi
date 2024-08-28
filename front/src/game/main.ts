@@ -1,29 +1,40 @@
-import { Boot } from './scenes/Boot';
-import { GameOver } from './scenes/GameOver';
-import { Game as MainGame } from './scenes/Game';
-import { MainMenu } from './scenes/MainMenu';
 import { AUTO, Game } from 'phaser';
-import { Preloader } from './scenes/Preloader';
+import {TsikaraFirstLevel} from "./scenes/TsikaraSceneFirstLevel";
+import {MossyScene} from "./scenes/MossyScene.ts";
+import {ForestScene} from "./scenes/ForestScene/ForestScene.ts";
 
 //  Find out more information about the Game Config at:
 //  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
 const config: Phaser.Types.Core.GameConfig = {
     type: AUTO,
-    width: 1024,
-    height: 768,
+    // width: window.innerWidth,
+    // height: window.innerHeight,
     parent: 'game-container',
     backgroundColor: '#028af8',
+    // eh
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { x: 0, y: 300 },
+            debug: false
+        }
+    },
     scene: [
-        Boot,
-        Preloader,
-        MainMenu,
-        MainGame,
-        GameOver
+        ForestScene,
+        MossyScene,
+        TsikaraFirstLevel,
     ]
 };
 
 const StartGame = (parent: string) => {
+    const parentElement = document.getElementById(parent);
+    if (!parentElement) {
+        throw new Error("Parent element not found");
+    }
 
+    // Set dimensions based on the parent element
+    config.width = parentElement.offsetWidth;
+    config.height = parentElement.offsetHeight;
     return new Game({ ...config, parent });
 
 }
