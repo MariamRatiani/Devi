@@ -145,6 +145,9 @@ export class ForestScene extends Scene implements SceneInteractable {
 
             this.characterIsMoving = true;
             this.character.setVelocityY(JUMP_HEIGHT);
+            
+            this.character.play('boyRun');
+
             this.time.delayedCall(1500, () => {
                 this.characterIsMoving = false;
                 resolve(true);

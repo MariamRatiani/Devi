@@ -30,7 +30,7 @@ export class CharacterManager {
 
         // this.scene.character = this.scene.physics.add.sprite(20, this.scene.camera.height - 400, 'character')
         const scale = calculateScale(this.scene.character, this.scene.cameras)
-        const scalingNumber: number = 7
+        const scalingNumber: number = 6
         this.scene.character.setScale(scale[0]/scalingNumber, scale[0]/scalingNumber).setOrigin(0, 0).setScrollFactor(0)
 
     }
@@ -50,6 +50,10 @@ export class CharacterManager {
             this.scene.character.body.velocity.x = 0; // Stop horizontal movement
             
         }
+        if (!this.scene.characterIsMoving) {
+            this.scene.character.setVelocity(0, 0); // Stop all movement
+        }
+
     }
 
     private handleCharacterYCoordinate() {
