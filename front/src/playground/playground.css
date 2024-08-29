@@ -40,11 +40,13 @@ body {
     background-color: #0e1a3a;
     display: flex;
     flex-direction: column;
+    position: relative; /* Added for positioning child elements */
+    overflow: hidden; /* Prevents overflow if content is too large */
 }
 
 .CodeMirror {
     flex: 1;
-    height: 0;
+    overflow-y: auto; /* Allows the content to be scrollable */
 }
 
 
@@ -116,12 +118,16 @@ body {
 
 
 .right-button-container {
-    margin: 30px;
+    margin: 26px;
+    position: sticky;
+    bottom: 30px; /* Sticks to the bottom of the container */
+
 
     display: flex;
     flex-direction: column; /* Stacks buttons vertically */
     align-items: flex-end; /* Aligns buttons to the right */
     gap: 22px; /* Space between the stacked buttons */
+    z-index: 1000;
 }
 
 .notification {

@@ -4,7 +4,7 @@ export class LivesManager {
     scene: ForestScene;
     lives: number; // Variable to keep track of lives
     heartImages: Phaser.GameObjects.Image[] = []; // Array to store heart images
-    heartScale: number = 0.055
+    heartScale: number = 0.059
     
     constructor(scene: ForestScene, initialLives: number = 3) {
         this.scene = scene;
