@@ -1,7 +1,5 @@
 import React, { useImperativeHandle, useRef } from 'react';
 import CodeMirror, {EditorView} from '@uiw/react-codemirror';
-// import {sublime} from "@uiw/codemirror-theme-sublime";
-import {dracula} from "thememirror";
 import './ForestSceneEditorStyle.scss'
 import {javascript} from "@codemirror/lang-javascript";
 
@@ -108,7 +106,7 @@ const GeorgianCodeEditor = React.forwardRef((props: GeorgianCodeEditorProps, ref
             ref={editorRef}
             value={code}
             height="100%"
-            theme={dracula} 
+            theme={"light"} 
             extensions={extensions}
             onChange={(value: string) => {
                 setCode(value);
