@@ -20,8 +20,8 @@ export class CharacterManager {
                 { key: 'boyWithBull6' },
                 { key: 'boyWithBull7' }
             ],
-            frameRate: 10, // Adjust this to change animation speed
-            repeat: -1 // -1 for infinite looping
+            frameRate: 13, // Adjust this to change animation speed
+            repeat: 4 // -1 for infinite looping
         });
     }
 
