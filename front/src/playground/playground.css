@@ -52,26 +52,6 @@ body {
     gap: 10px; 
 }
 
-/* Stylish button styles */
-.stylish-button {
-    background-color: #007bff;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.stylish-button:hover {
-    background-color: #0056b3;
-}
-
 .playground {
     margin: 0;
     padding: 0;
@@ -85,7 +65,7 @@ body {
     flex: 1.5;
     width: 100%;
     height: 100%;
-    background-color: #0e1a3a;
+    background-color: #002b36;
     display: flex;
     flex-direction: column;
     position: relative; /* Added for positioning child elements */
@@ -106,22 +86,22 @@ body {
 }
 
 .stylish-button {
-    background-color: #007bff;
+    background-color: #2AA198FF;
     border: none;
     color: white;
-    padding: 10px 20px;
+    padding: 10px 18px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    margin: 4px 2px;
+    /*margin: 2px 2px;*/
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 30px;
     transition: background-color 0.3s ease;
 }
 
 .stylish-button:hover {
-    background-color: #0056b3;
+    background-color: #deab18;
 }
 
 .button-container {
@@ -153,44 +133,3 @@ body {
     transform: translateX(-50%) translateY(-10px);
     pointer-events: none; 
 }
-
-
-
-
-
-
-
-
-
-
-/*!* playground.scss *!*/
-/*.editorContainer {*/
-/*    --background-color: #002b36; !* Dark, forest green background *!*/
-/*    --text-color: #839496; !* Soft light green/gray for text *!*/
-/*    --keyword-color: #859900; !* Bright green for keywords *!*/
-/*    --string-color: #2aa198; !* Teal for strings *!*/
-/*    --comment-color: #586e75; !* Muted green for comments *!*/
-/*    --number-color: #b58900; !* Gold for numbers *!*/
-
-/*    .CodeMirror {*/
-/*        height: 100%;*/
-/*        background-color: var(--background-color);*/
-/*        color: var(--text-color);*/
-/*        font-size: 18px;*/
-/*    }*/
-
-/*    .CodeMirror .cm-content {*/
-/*        background-color: var(--background-color);*/
-/*        color: var(--text-color);*/
-/*    }*/
-
-/*    .CodeMirror .cm-keyword {*/
-/*        color: var(--keyword-color);*/
-/*    }*/
-
-/*    .CodeMirror .cm-string {*/
-/*        color: var(--string-color);*/
-/*    }*/
-
-/*    .CodeMirror .cm-*/
-/*}*/
