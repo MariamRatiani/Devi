@@ -20,8 +20,8 @@ export class CharacterManager {
                 { key: 'boyWithBull6' },
                 { key: 'boyWithBull7' }
             ],
-            frameRate: 10, // Adjust this to change animation speed
-            repeat: -1 // -1 for infinite looping
+            frameRate: 13, // Adjust this to change animation speed
+            repeat: 4 // -1 for infinite looping
         });
     }
 
@@ -89,4 +89,19 @@ export class CharacterManager {
             this.scene.characterIsMoving = false
         }
     }
+
+    public makeCharacterTwinkle() {
+        this.scene.tweens.add({
+            targets: this.scene.character,
+            alpha: { from: 1, to: 0 },
+            ease: 'Cubic.easeInOut',
+            duration: 100,
+            repeat: 5,  // Number of times to twinkle
+            yoyo: true,  // Go back to original alpha after each repeat
+            onComplete: () => {
+                this.scene.character.setAlpha(1);  // Reset to fully visible after twinkling
+            }
+        });
+    }
+
 }
