@@ -4,9 +4,6 @@ import {PlatformWithComb} from "./PlatformWithComb.ts";
 
 const heights: number[] = [0, 1, 2, 2, 1, 0, 1, 1, 2, 0];
 
-const combWidth = 2
-const combHeight = 2
-
 export class PlatformManager {
     private scene: ForestScene;
     private platformsWithCombs: PlatformWithComb[] = [];
@@ -24,12 +21,13 @@ export class PlatformManager {
     }
 
     private createPlatformWithComb(index: integer) {
+        
         const xCoordinate = this.startingCoordinateOfPlatform + index * this.distanceBetweenPlatforms;
         const characterHeight = this.scene.character.displayHeight;
         const y = this.groundTop - characterHeight - 150 * heights[index];
         const platformKey = 'tile3'
             // = index % 2 === 0 ? 'tile1' : 'tile3';
-
+        
         const platformWithComb = new PlatformWithComb(this.scene, xCoordinate, y, platformKey, 'comb', this.combDistanceFromPlatform);
         this.platformsWithCombs.push(platformWithComb);
 
@@ -55,4 +53,6 @@ export class PlatformManager {
             this.scene.physics.add.collider(this.scene.character, platformWithComb.platform);
         });
     }
+    
+   
 }

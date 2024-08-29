@@ -2,13 +2,15 @@ import { Scene } from "phaser";
 import Sprite = Phaser.GameObjects.Sprite;
 import { EventBus } from "../../EventBus.ts";
 import TileSprite = Phaser.GameObjects.TileSprite;
-import { PlatformManager } from "./platformManager.ts";
+import { PlatformManager } from "./platforms/PlatformManager.ts";
 import { BackgroundManager } from "./BackgroundManager.ts";
 import { CharacterManager } from "./CharacterManager.ts";
 import { calculateScale, setupCamera } from "./utils.ts";
 import { AssetManager } from "./AssetManager.ts";
-import {JUMP_HEIGHT, JUMPING_X} from "./constants.ts";
-import {RewardText} from "./RewardText.ts";
+import {JUMP_HEIGHT} from "./constants.ts";
+import {RewardManager} from "./RewardManager.ts";
+import {ExplosionManager} from "./ExplosionManager.ts";
+import {LivesManager} from "./LivesManager.ts";
 
 export class ForestScene extends Scene implements SceneInteractable {
     background1: TileSprite;
@@ -19,7 +21,7 @@ export class ForestScene extends Scene implements SceneInteractable {
     ground: Sprite;
     spaceKey: Phaser.Input.Keyboard.Key;
 
-    lastTile: TileSprite;
+    lastTile: Phaser.Physics.Arcade.Sprite;
     camera: Phaser.Cameras.Scene2D.Camera;
     staticPlatforms: Phaser.Physics.Arcade.StaticGroup;
     cursors: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -29,7 +31,6 @@ export class ForestScene extends Scene implements SceneInteractable {
     backgroun2speed: number = 50;
     backgroun3speed: number = 80;
     backgroun4speed: number = 100;
-    platformsSpeed: number = 120;
 
     platformManager: PlatformManager;
     backgroundManager: BackgroundManager;
@@ -41,8 +42,11 @@ export class ForestScene extends Scene implements SceneInteractable {
     // reward variables
     characterIsMoving: boolean;
     // rewardCount: number
-    rewardText: RewardText
+    rewardManager: RewardManager
+    explosionManager: ExplosionManager;
 
+    livesManager: LivesManager
+    
     constructor() {
         super('ForestScene');
         this.characterIsMoving = false;
@@ -88,25 +92,30 @@ export class ForestScene extends Scene implements SceneInteractable {
         this.backgroundManager.createBackgrounds();
         this.rewards = this.physics.add.group()
         // this.rewardCount = 0
-        this.rewardText = new RewardText(this, 0)
+        this.rewardManager = new RewardManager(this, 0)
 
         this.createGround();
         this.characterManager = new CharacterManager(this);
+        this.characterManager.createFrames()
         this.characterManager.createCharacter();
+
+        // აფეთქებააა
+        this.explosionManager = new ExplosionManager(this);
+        this.explosionManager.createExplosions()
+        
         this.platformManager = new PlatformManager(this);
         // this.createPlatforms()
-        this.platformManager.createPlatforms(this);
+        this.platformManager.createPlatforms();
 
-        //dont know if we need these 2 lines
-        // this.physics.add.existing(this.character);
-        // this.camera.startFollow(this.character, true, 0.1, 0.0);
+        //სიცოცხლეები
+        this.livesManager = new LivesManager(this, 3);
 
         this.platformManager.setColliderToPlatforms();
         this.physics.add.collider(this.character, this.staticPlatforms);
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
         this.cursors = this.input.keyboard.createCursorKeys();
-
+        
         EventBus.emit('current-scene-ready', this);
 
     }
@@ -123,15 +132,41 @@ export class ForestScene extends Scene implements SceneInteractable {
 
         // update movements
         // this.characterManager.updateCharacterMovement();
-
         this.backgroundManager.updateBackgroundMovement(delta);
         this.platformManager.updatePlatformsPosition(delta);
+        this.explosionManager.updateExplosionsPosition(delta);
+
+    }
+
+    handleCharacterDamage() {
+        console.log('Character takes damage!');
+        this.livesManager.reduceLife()
+        
+        if (this.livesManager.getLivesCount() === 0) {
+            finishDefeatedGame()
+        }
+        // Implement the logic to reduce health or other damage effects
     }
     
-    private finishGame() {
+    finishDefeatedGame() {
+        this.character.body?.setVelocityX(0);
+        this.finishText()
+        const text = 'სამწუხაროდ დამარცხდი'
+        this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, text, { fontSize: '40px', color: '#FFFFFF' }).setOrigin(0.5);
+    }
+    
+    finishText() {
+        const text = 'თამაში დასრულებულია'
+        this.add.text(this.cameras.main.centerX , this.cameras.main.centerY - 100, text, { fontSize: '40px', color: '#FFFFFF' }).setOrigin(0.5);
+    }
+    
+    finishGame() {
         this.input.keyboard?.shutdown();
         this.character.body?.setVelocityX(0);
-        this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, 'Game Over', { fontSize: '40px', color: '#FFFFFF' }).setOrigin(0.5);
+        this.finishText()
+
+        const text = 'შენ ააგროვე ' + this.rewardManager.getRewardCount() + ' სავარცხელი'
+        this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, text, { fontSize: '40px', color: '#FFFFFF' }).setOrigin(0.5);
     }
 
 
@@ -144,6 +179,9 @@ export class ForestScene extends Scene implements SceneInteractable {
 
             this.characterIsMoving = true;
             this.character.setVelocityY(JUMP_HEIGHT);
+            
+            this.character.play('boyRun');
+
             this.time.delayedCall(1500, () => {
                 this.characterIsMoving = false;
                 resolve(true);
@@ -162,6 +200,9 @@ export class ForestScene extends Scene implements SceneInteractable {
             console.log('character starts moving', this.characterIsMoving)
             this.characterIsMoving = true;
             
+            // Play the running animation
+            this.character.play('boyRun');
+            // this.characterManager.updateCharacterMovement()
             this.tweens.add({
                 targets: this.character,
                 x: this.character.x + 100,

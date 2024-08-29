@@ -9,7 +9,7 @@ export class GameOver extends Scene
 
     constructor ()
     {
-        super('GameOver');
+        super('');
     }
 
     create ()

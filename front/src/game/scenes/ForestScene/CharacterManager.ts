@@ -1,16 +1,36 @@
 import {ForestScene} from "./ForestScene.ts";
 import {calculateScale} from "./utils.ts";
-import { CHARACTER_VELOCITY_X, CHARACTER_VELOCITY_Y } from "./constants"
+import {CHARACTER_VELOCITY_X, CHARACTER_VELOCITY_Y, INITIAL_CHARACTER_X} from "./constants"
 export class CharacterManager {
     scene: ForestScene
     constructor(scene: ForestScene) {
         this.scene = scene
     }
 
+    public createFrames() {
+        // Define the animation
+        this.scene.anims.create({
+            key: 'boyRun',
+            frames: [
+                { key: 'boyWithBull1' },
+                { key: 'boyWithBull2' },
+                { key: 'boyWithBull3' },
+                { key: 'boyWithBull4' },
+                { key: 'boyWithBull5' },
+                { key: 'boyWithBull6' },
+                { key: 'boyWithBull7' }
+            ],
+            frameRate: 10, // Adjust this to change animation speed
+            repeat: -1 // -1 for infinite looping
+        });
+    }
+
     createCharacter() {
-        this.scene.character = this.scene.physics.add.sprite(20, this.scene.camera.height - 400, 'character')
+        this.scene.character = this.scene.physics.add.sprite(INITIAL_CHARACTER_X, this.scene.camera.height - 400, 'boyWithBull1'); // Start with the first frame
+
+        // this.scene.character = this.scene.physics.add.sprite(20, this.scene.camera.height - 400, 'character')
         const scale = calculateScale(this.scene.character, this.scene.cameras)
-        const scalingNumber: number = 7
+        const scalingNumber: number = 6
         this.scene.character.setScale(scale[0]/scalingNumber, scale[0]/scalingNumber).setOrigin(0, 0).setScrollFactor(0)
 
     }
@@ -30,6 +50,10 @@ export class CharacterManager {
             this.scene.character.body.velocity.x = 0; // Stop horizontal movement
             
         }
+        if (!this.scene.characterIsMoving) {
+            this.scene.character.setVelocity(0, 0); // Stop all movement
+        }
+
     }
 
     private handleCharacterYCoordinate() {
