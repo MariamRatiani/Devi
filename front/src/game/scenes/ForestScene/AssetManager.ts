@@ -28,7 +28,7 @@ export class AssetManager {
 
         this.scene.load.image('heart', '/assets/heart.png')
 
-        this.loadExplotion()
+        this.loadExplosion()
         
         // Add a callback to log when assets are done loading
         this.scene.load.on('complete', () => {
@@ -36,7 +36,7 @@ export class AssetManager {
         });
     }
     
-    private loadExplotion()  {
+    private loadExplosion()  {
         for (let i = 1; i <= 8; i++) {
             this.scene.load.image(`explosion_frame_${i}`, `assets/explosion/explosion_frame_transparent_${i}.png`);
         }

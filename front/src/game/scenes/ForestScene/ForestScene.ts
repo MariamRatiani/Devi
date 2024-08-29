@@ -2,7 +2,7 @@ import { Scene } from "phaser";
 import Sprite = Phaser.GameObjects.Sprite;
 import { EventBus } from "../../EventBus.ts";
 import TileSprite = Phaser.GameObjects.TileSprite;
-import { PlatformManager } from "./platformManager.ts";
+import { PlatformManager } from "./platforms/PlatformManager.ts";
 import { BackgroundManager } from "./BackgroundManager.ts";
 import { CharacterManager } from "./CharacterManager.ts";
 import { calculateScale, setupCamera } from "./utils.ts";
@@ -98,9 +98,14 @@ export class ForestScene extends Scene implements SceneInteractable {
         this.characterManager = new CharacterManager(this);
         this.characterManager.createFrames()
         this.characterManager.createCharacter();
+
+        // აფეთქებააა
+        this.explosionManager = new ExplosionManager(this);
+        this.explosionManager.createExplosions()
+        
         this.platformManager = new PlatformManager(this);
         // this.createPlatforms()
-        this.platformManager.createPlatforms(this);
+        this.platformManager.createPlatforms();
 
         //სიცოცხლეები
         this.livesManager = new LivesManager(this, 3);
@@ -111,10 +116,6 @@ export class ForestScene extends Scene implements SceneInteractable {
         // @ts-expect-error
         this.cursors = this.input.keyboard.createCursorKeys();
         
-        // აფეთქებააა
-        this.explosionManager = new ExplosionManager(this);
-        this.explosionManager.createAnimations();  
-        this.explosionManager.createExplosions()
         EventBus.emit('current-scene-ready', this);
 
     }

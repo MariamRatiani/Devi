@@ -1,0 +1,7 @@
+ესეიგიიი
+
+explosion on the platform არ ჩანდა საერთოდ.
+ძირში რაც დევს, ეგენი მუშაობენ.
+
+შესაცვლელლია explosionItem and ExplosionManager logics, 
+იმიტო რო ახლა ლოგიკურად არ არი განაწილებული მოვალეობები
