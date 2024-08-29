@@ -19,6 +19,7 @@ export class Platform {
 
         this.item = item;
         scene.physics.add.overlap(scene.character, item.getSprite(), () => {
+            console.log("in Platform overlap")
             item.handleCollision(scene.character);
         });
     }

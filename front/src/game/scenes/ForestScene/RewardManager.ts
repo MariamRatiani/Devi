@@ -22,6 +22,7 @@ export class RewardManager {
 
         // Create comb images based on the reward count
         for (let i = 0; i < this.rewardCount; i++) {
+            console.log("maing combs draw")
             const curComb = this.scene.add.image(startX + i * this.combsSpacing, 40, 'comb').setScrollFactor(0);
             curComb.setScale(this.combScale, this.combScale);
             this.combImages.push(curComb);
@@ -31,9 +32,12 @@ export class RewardManager {
     public incrementRewardCount() {
         this.rewardCount += 1;
         this.addCombImage(); // Add a new comb image
+        console.log("comb count: ", this.rewardCount)
     }
 
     private addCombImage() {
+        console.log("maing combs draw")
+
         const startX = 40 + this.combImages.length * this.combsSpacing; // Calculate X position for the new comb
         const newComb = this.scene.add.image(startX, 40, 'comb').setScrollFactor(0);
         newComb.setScale(this.combScale, this.combScale);

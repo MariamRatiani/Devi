@@ -23,9 +23,7 @@ export class ExplosionItem extends PlatformItem {
 
             this.sprite.setData('triggered', true);
             this.sprite.play('explosionAnim'); // Play explosion animation
-            console.log('expl triggered')
             this.sprite.on('animationcomplete', () => {
-                console.log('animacia unda damtavreboda')
 
                 this.sprite.setVisible(false);
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

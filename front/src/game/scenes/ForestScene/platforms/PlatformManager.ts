@@ -6,13 +6,14 @@ import {ForestScene} from "../ForestScene.ts";
 const heights: number[] = [0, 1, 0, 1, 2, 0, 1, 2, 2, 0];
 
 export class PlatformManager {
-    private scene: ForestScene;
-    private platforms: Platform[] = [];
+    
     private static startingCoordinateOfPlatform = 320;
     private static distanceBetweenPlatforms = 270;
+
+    private scene: ForestScene;
+    private platforms: Platform[] = [];
     groundTop: number;
     groundHeight: number;
-    // private combDistanceFromPlatform = 50;
     private platformKey = 'tile3';
     
     constructor(scene: ForestScene) {
