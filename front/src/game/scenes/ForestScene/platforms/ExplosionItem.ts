@@ -32,6 +32,8 @@ export class ExplosionItem extends PlatformItem {
                 // @ts-expect-error
                 this.sprite.body.enable = false;
             });
+
+            this.forestScene.characterManager.makeCharacterTwinkle();
             this.forestScene.handleCharacterDamage()
             this.scene.events.emit('playerDamaged'); // Emit event for player damage
         }

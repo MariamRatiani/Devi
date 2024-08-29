@@ -89,4 +89,19 @@ export class CharacterManager {
             this.scene.characterIsMoving = false
         }
     }
+
+    public makeCharacterTwinkle() {
+        this.scene.tweens.add({
+            targets: this.scene.character,
+            alpha: { from: 1, to: 0 },
+            ease: 'Cubic.easeInOut',
+            duration: 100,
+            repeat: 5,  // Number of times to twinkle
+            yoyo: true,  // Go back to original alpha after each repeat
+            onComplete: () => {
+                this.scene.character.setAlpha(1);  // Reset to fully visible after twinkling
+            }
+        });
+    }
+
 }

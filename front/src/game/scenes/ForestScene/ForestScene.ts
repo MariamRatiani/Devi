@@ -206,18 +206,7 @@ export class ForestScene extends Scene implements SceneInteractable {
                 this.characterIsMoving = false;
                 resolve(true);
             }, [], this);
-
-            // this.characterManager.updateCharacterMovement()
-            // this.tweens.add({
-            //     targets: this.character,
-            //     x: this.character.x + 100,
-            //     duration: 1000,
-            //     ease: 'Power2',
-            //     onComplete: () => {
-            //         this.characterIsMoving = false;
-            //         resolve(true);
-            //     }
-            // });
+            
         });
     }    
 }
