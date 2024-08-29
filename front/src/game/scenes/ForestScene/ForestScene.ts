@@ -11,8 +11,10 @@ import {JUMP_HEIGHT} from "./constants.ts";
 import {RewardManager} from "./RewardManager.ts";
 import {ExplosionManager} from "./ExplosionManager.ts";
 import {LivesManager} from "./LivesManager.ts";
+import {AudioManager} from "./AudioManager";
 
 export class ForestScene extends Scene implements SceneInteractable {
+    static musicOn: boolean = false
     background1: TileSprite;
     background2: TileSprite;
     background3: TileSprite;
@@ -46,14 +48,11 @@ export class ForestScene extends Scene implements SceneInteractable {
     explosionManager: ExplosionManager;
 
     livesManager: LivesManager
+    audioManager: AudioManager;
     
     constructor() {
         super('ForestScene');
         this.characterIsMoving = false;
-    }
-
-    init() {
-        console.log('inited');
     }
 
     preload() {
@@ -112,6 +111,15 @@ export class ForestScene extends Scene implements SceneInteractable {
 
         this.platformManager.setColliderToPlatforms();
         this.physics.add.collider(this.character, this.staticPlatforms);
+
+        this.audioManager = new AudioManager(this); // Initialize AudioManager
+        this.audioManager.initializeSounds();
+        //
+        if (!ForestScene.musicOn) {
+            // this.audioManager.playSound('backgroundMusic');
+            ForestScene.musicOn = true
+        }
+
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -143,7 +151,7 @@ export class ForestScene extends Scene implements SceneInteractable {
         this.livesManager.reduceLife()
         
         if (this.livesManager.getLivesCount() === 0) {
-            finishDefeatedGame()
+            this.finishDefeatedGame()
         }
         // Implement the logic to reduce health or other damage effects
     }

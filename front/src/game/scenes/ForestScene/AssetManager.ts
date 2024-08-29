@@ -30,6 +30,7 @@ export class AssetManager {
 
         this.loadExplosion()
         
+        this.loadSounds()
         // Add a callback to log when assets are done loading
         this.scene.load.on('complete', () => {
             console.log('All assets loaded');
@@ -50,7 +51,11 @@ export class AssetManager {
         this.scene.load.image('boyWithBull5', 'assets/character_frames/boyWithBull5.png');
         this.scene.load.image('boyWithBull6', 'assets/character_frames/boyWithBull6.png');
         this.scene.load.image('boyWithBull7', 'assets/character_frames/boyWithBull7.png');
-
+    }
+    
+    private loadSounds() {
+        this.scene.load.audio('backgroundMusic', 'public/audio/blue_skies.mp3');
+        this.scene.load.audio('explosionAudio', 'public/audio/explosion.mp3')
     }
     
 }

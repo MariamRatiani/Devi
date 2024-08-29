@@ -43,6 +43,7 @@ export class ExplosionManager {
         this.scene.physics.add.overlap(this.scene.character, explosion.getSprite(), () => {
             explosion.handleCollision(this.scene.character);
         });
+        
     }
 
     public updateExplosionsPosition(delta: number) {

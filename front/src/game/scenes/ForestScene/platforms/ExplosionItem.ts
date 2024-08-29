@@ -20,6 +20,7 @@ export class ExplosionItem extends PlatformItem {
     handleCollision(player: Phaser.Physics.Arcade.Sprite): void {
         // This method should trigger the explosion animation
         if (!this.sprite.getData('triggered')) {
+            this.forestScene.audioManager.playExplosion()
 
             this.sprite.setData('triggered', true);
             this.sprite.play('explosionAnim'); // Play explosion animation
