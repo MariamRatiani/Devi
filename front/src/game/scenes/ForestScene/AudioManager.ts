@@ -17,7 +17,7 @@ export class AudioManager {
     public initializeSounds() {
         this.sounds['backgroundMusic'] = this.scene.sound.add('backgroundMusic')
         this.sounds['explosionAudio'] = this.scene.sound.add('explosionAudio')
-
+        this.sounds['combTaking'] = this.scene.sound.add('combTaking')
     }
 
     // Play a sound by its key
@@ -40,5 +40,9 @@ export class AudioManager {
         if (sound && sound.isPlaying) {
             sound.stop();
         }
+    }
+    
+    public takeCombSound() {
+        this.sounds['combTaking'].play({volume: 0.5})
     }
 }

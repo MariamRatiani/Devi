@@ -54,8 +54,9 @@ export class AssetManager {
     }
     
     private loadSounds() {
-        this.scene.load.audio('backgroundMusic', 'public/audio/blue_skies.mp3');
-        this.scene.load.audio('explosionAudio', 'public/audio/explosion.mp3')
+        this.scene.load.audio('backgroundMusic', '/audio/blue_skies.mp3');
+        this.scene.load.audio('explosionAudio', '/audio/explosion.mp3')
+        this.scene.load.audio('combTaking', '/audio/comb_taking.mp3')
     }
     
 }
