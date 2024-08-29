@@ -39,6 +39,8 @@ export class CharacterManager {
         const centerX = this.scene.cameras.main.width / 4;
         this.handleCharacterYCoordinate()
 
+        // @ts-ignore
+        // @ts-ignore
         if (this.scene.character.x < centerX || this.scene.character.x > this.scene.endX) {
             this.handleCharacterXCoordinateMoving()
         } else {

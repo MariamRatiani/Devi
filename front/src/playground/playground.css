@@ -154,3 +154,43 @@ body {
     pointer-events: none; 
 }
 
+
+
+
+
+
+
+
+
+
+/*!* playground.scss *!*/
+/*.editorContainer {*/
+/*    --background-color: #002b36; !* Dark, forest green background *!*/
+/*    --text-color: #839496; !* Soft light green/gray for text *!*/
+/*    --keyword-color: #859900; !* Bright green for keywords *!*/
+/*    --string-color: #2aa198; !* Teal for strings *!*/
+/*    --comment-color: #586e75; !* Muted green for comments *!*/
+/*    --number-color: #b58900; !* Gold for numbers *!*/
+
+/*    .CodeMirror {*/
+/*        height: 100%;*/
+/*        background-color: var(--background-color);*/
+/*        color: var(--text-color);*/
+/*        font-size: 18px;*/
+/*    }*/
+
+/*    .CodeMirror .cm-content {*/
+/*        background-color: var(--background-color);*/
+/*        color: var(--text-color);*/
+/*    }*/
+
+/*    .CodeMirror .cm-keyword {*/
+/*        color: var(--keyword-color);*/
+/*    }*/
+
+/*    .CodeMirror .cm-string {*/
+/*        color: var(--string-color);*/
+/*    }*/
+
+/*    .CodeMirror .cm-*/
+/*}*/
