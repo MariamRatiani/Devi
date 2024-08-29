@@ -165,7 +165,7 @@ export class ForestScene extends Scene implements SceneInteractable {
         this.character.body?.setVelocityX(0);
         this.finishText()
 
-        const text = 'შენ ააგროვე ' + this.rewardManager.getRewardCount() + ' სავარცხელი'
+        const text = 'შენ დააგროვე ' + this.rewardManager.getRewardCount() + ' სავარცხელი'
         this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, text, { fontSize: '40px', color: '#FFFFFF' }).setOrigin(0.5);
     }
 

@@ -1,0 +1,23 @@
+@top Program {
+  Statement*
+}
+
+Statement {
+  Keyword | Identifier | Number | String | Comment
+}
+
+Keyword {
+  "if" | "else" // Add more Georgian keywords as needed
+}
+
+Identifier { }
+
+
+Number {
+  1 2
+}
+
+
+Comment {
+  "//" $[^(\n|\r)]*
+}
