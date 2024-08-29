@@ -1,0 +1,52 @@
+/* playground.scss */
+.editorContainer {
+    //--background-color: #002b36; /* Dark, forest green background */
+    //--text-color: #b4c8cb; /* Soft light green/gray for text */
+    //--keyword-color: #859900; /* Bright green for keywords */
+    //--string-color: #2aa198; /* Teal for strings */
+    //--comment-color: #586e75; /* Muted green for comments */
+    //--number-color: #b58900; /* Gold for numbers */
+    --background-color: #002b36;
+    --text-color: #a7ccad;
+    --keyword-color: #859900;
+    --string-color: #2aa198;
+    --comment-color: #586e75;
+    --number-color: #b58900;
+    --variable-color: #268bd2; /* Blue for variables */
+    --function-color: #cb4b16; /* Orange for functions */
+    --operator-color: #6c71c4; /* Purple for operators */
+    --bracket-color: #93a1a1; /* Gray for brackets */
+    --tag-color: #dc322f; /* Red for HTML/XML tags */
+    --attribute-color: #b58900; /* Gold for attributes */
+    --type-color: #268bd2; /* Blue for types */
+    --property-color: #859900; /* Green for properties */
+
+    
+    .CodeMirror {
+        height: 100%;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        font-size: 18px;
+    }
+
+    .CodeMirror .cm-content {
+        background-color: var(--background-color);
+        color: var(--text-color);
+    }
+
+    .CodeMirror .cm-keyword {
+        color: var(--keyword-color);
+    }
+
+    .CodeMirror .cm-string {
+        color: var(--string-color);
+    }
+
+    .CodeMirror .cm-comment {
+        color: var(--comment-color);
+    }
+
+    .CodeMirror .cm-number {
+        color: var(--number-color);
+    }
+}

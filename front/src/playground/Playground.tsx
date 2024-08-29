@@ -83,9 +83,9 @@ function Playground() {
             <div className="editorContainer">
                 <GeorgianCodeEditor ref={editorRef} code={code} setCode={setCode} />
                 <div className="button-container">
-                    <button className="stylish-button" onClick={didTapOnRunCode}>Run Code</button>
-                    <button className="stylish-button" onClick={didTapOnResetCode}>Reset Code</button>
-                    <button className="stylish-button" onClick={didTapOnResetGame}>Reset Game</button>
+                    <button className="stylish-button" onClick={didTapOnRunCode}>კოდის გაშვება</button>
+                    <button className="stylish-button" onClick={didTapOnResetCode}>კოდის გასუფთავება</button>
+                    <button className="stylish-button" onClick={didTapOnResetGame}>თამაშის თავიდან დაწყება</button>
                 </div>
                 <button className="help-button" onClick={toggleRulesModal}>?</button>
             </div>
