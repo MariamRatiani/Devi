@@ -3,13 +3,13 @@ import { Platform } from './Platform.ts';
 import { PlatformItemFactory } from './PlatformItemFactory.ts';
 import {ForestScene} from "../ForestScene.ts";
 
-const heights: number[] = [0, 1, 0, 1, 2, 0, 2, 1, 2, 0];
+const heights: number[] = [0, 1, 0, 1, 2, 0, 1, 2, 2, 0];
 
 export class PlatformManager {
     private scene: ForestScene;
     private platforms: Platform[] = [];
-    private startingCoordinateOfPlatform = 320;
-    private distanceBetweenPlatforms = 270;
+    private static startingCoordinateOfPlatform = 320;
+    private static distanceBetweenPlatforms = 270;
     groundTop: number;
     groundHeight: number;
     // private combDistanceFromPlatform = 50;
@@ -20,34 +20,36 @@ export class PlatformManager {
         this.scene = scene;
         this.groundTop = this.scene.camera.height - this.scene.ground.height;
         this.groundHeight = this.scene.ground.height;
-        scene.endX = this.startingCoordinateOfPlatform + 10 * this.distanceBetweenPlatforms;
+        scene.endX = PlatformManager.startingCoordinateOfPlatform + 10 * PlatformManager.distanceBetweenPlatforms;
     }
     
-    private getX(index: number) {
-        return this.startingCoordinateOfPlatform + index * this.distanceBetweenPlatforms;
+    public static getPlatformX(index: number) {
+        return this.startingCoordinateOfPlatform + index * PlatformManager.distanceBetweenPlatforms;
     }
     
-    private getY(index: number) {
+    public getPlatformY(index: number) {
         const characterHeight = this.scene.character.displayHeight;
         return this.groundTop - characterHeight - 150 * heights[index];
     }
 
     private createPlatformWithComb(index: number) {
-        const x = this.getX(index)
-        const y = this.getY(index)
+        const x = PlatformManager.getPlatformX(index)
+        const y = this.getPlatformY(index)
         
         const item = PlatformItemFactory.createItem('comb', this.scene, x, y)
         const platform = new Platform(this.scene, x, y, this.platformKey, item)
          this.platforms.push(platform);
 
         if (index === 9) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error
             this.scene.lastTile = platform.platform;
         }
     }
     
     private createPlatformWithExplosion(index: number) {
-        const x = this.getX(index)
-        const y = this.getY(index)
+        const x = PlatformManager.getPlatformX(index)
+        const y = this.getPlatformY(index)
 
         const item = PlatformItemFactory.createItem('explosion', this.scene, x, y)
         const platform = new Platform(this.scene, x, y, this.platformKey, item)
@@ -59,16 +61,17 @@ export class PlatformManager {
     }
 
     createPlatforms() {
-        this.createPlatformWithExplosion(0)
+        this.createPlatformWithComb(0)
+        this.createPlatformWithComb(1)
+        this.createPlatformWithComb(2)
+        this.createPlatformWithComb(3)
+        this.createPlatformWithExplosion(4)
+        this.createPlatformWithComb(5)
 
-        for (let i = 1; i <= 5; i++) {
-            this.createPlatformWithComb(i);
-        }
-        
-        this.createPlatformWithExplosion(6)
+        this.createPlatformWithComb(6)
         this.createPlatformWithExplosion(7)
         
-        this.createPlatformWithComb(8);
+        // this.createPlatformWithComb(8);
         this.createPlatformWithComb(9);
     }
 

@@ -21,7 +21,7 @@ export class ForestScene extends Scene implements SceneInteractable {
     ground: Sprite;
     spaceKey: Phaser.Input.Keyboard.Key;
 
-    lastTile: TileSprite;
+    lastTile: Phaser.Physics.Arcade.Sprite;
     camera: Phaser.Cameras.Scene2D.Camera;
     staticPlatforms: Phaser.Physics.Arcade.StaticGroup;
     cursors: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -141,14 +141,32 @@ export class ForestScene extends Scene implements SceneInteractable {
     handleCharacterDamage() {
         console.log('Character takes damage!');
         this.livesManager.reduceLife()
+        
+        if (this.livesManager.getLivesCount() === 0) {
+            finishDefeatedGame()
+        }
         // Implement the logic to reduce health or other damage effects
     }
     
-
-    private finishGame() {
+    finishDefeatedGame() {
+        this.character.body?.setVelocityX(0);
+        this.finishText()
+        const text = 'სამწუხაროდ დამარცხდი'
+        this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, text, { fontSize: '40px', color: '#FFFFFF' }).setOrigin(0.5);
+    }
+    
+    finishText() {
+        const text = 'თამაში დასრულებულია'
+        this.add.text(this.cameras.main.centerX , this.cameras.main.centerY - 100, text, { fontSize: '40px', color: '#FFFFFF' }).setOrigin(0.5);
+    }
+    
+    finishGame() {
         this.input.keyboard?.shutdown();
         this.character.body?.setVelocityX(0);
-        this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, 'Game Over', { fontSize: '40px', color: '#FFFFFF' }).setOrigin(0.5);
+        this.finishText()
+
+        const text = 'შენ ააგროვე ' + this.rewardManager.getRewardCount() + ' სავარცხელი'
+        this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, text, { fontSize: '40px', color: '#FFFFFF' }).setOrigin(0.5);
     }
 
 

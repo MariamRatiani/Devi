@@ -4,9 +4,6 @@ import {PlatformWithComb} from "./PlatformWithComb.ts";
 
 const heights: number[] = [0, 1, 2, 2, 1, 0, 1, 1, 2, 0];
 
-const combWidth = 2
-const combHeight = 2
-
 export class PlatformManager {
     private scene: ForestScene;
     private platformsWithCombs: PlatformWithComb[] = [];

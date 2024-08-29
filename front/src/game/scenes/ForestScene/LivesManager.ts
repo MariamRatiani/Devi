@@ -36,6 +36,9 @@ export class LivesManager {
         }
     }
 
+    getLivesCount(): number {
+        return this.lives
+    }
     // Method to reset lives (useful for restarting the game)
     resetLives(newLives: number = 3) {
         this.lives = newLives;

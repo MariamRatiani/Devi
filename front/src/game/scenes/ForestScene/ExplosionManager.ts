@@ -88,6 +88,7 @@
 import { ForestScene } from "./ForestScene.ts";
 import { PLATFORMS_VELOCITY } from "./constants.ts";
 import {ExplosionItem} from "./platforms/ExplosionItem.ts";
+import {PlatformManager} from "./platforms/PlatformManager.ts";
 
 
 export class ExplosionManager {
@@ -142,10 +143,14 @@ export class ExplosionManager {
         }
     }
 
-
+    // creates explosions on the ground
     public createExplosions() {
-        this.createExplosion(890, this.scene.cameras.main.height - 160); // Add an explosion on the ground
-        // You can add more explosions if needed
+        const indices: number[] = [1, 6];
+
+        for (const index of indices) {
+            const x: number = PlatformManager.getPlatformX(index)
+            this.createExplosion(x, this.scene.cameras.main.height - 160); 
+        }
     }
 }
 

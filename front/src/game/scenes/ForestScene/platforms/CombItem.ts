@@ -10,6 +10,8 @@ export class CombItem extends PlatformItem {
     handleCollision(player: Phaser.Physics.Arcade.Sprite): void {
         // Handle comb collection
         this.sprite.setVisible(false);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
         this.sprite.body.enable = false;
         this.scene.events.emit('combCollected');
     }
