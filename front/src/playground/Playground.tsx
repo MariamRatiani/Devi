@@ -85,7 +85,6 @@ function Playground() {
 
             <div className="editorContainer">
                 <GeorgianCodeEditor ref={editorRef} code={code} setCode={setCode} />
-                    {/* Right buttons container */}
                     <div className="right-button-container">
                         <button className="stylish-button" onClick={didTapOnRunCode}>გაშვება</button>
                         <button className="stylish-button" onClick={didTapOnResetCode}>გასუფთავება</button>
