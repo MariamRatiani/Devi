@@ -39,7 +39,13 @@ export class ExplosionItem extends PlatformItem {
     }
 
     updatePosition(moveAmount: number) {
-        this.sprite.x += moveAmount;
+        
+        if(this.forestScene.characterIsMovingForward) {
+            this.sprite.x += moveAmount;
+        }else if(this.forestScene.characterIsMovingBackward){
+            this.sprite.x -= moveAmount;
+
+        }
     }
 
     getSprite(): Phaser.Physics.Arcade.Sprite {

@@ -42,7 +42,9 @@ export class ForestScene extends Scene implements SceneInteractable {
     endX: number;
 
     // reward variables
-    characterIsMoving: boolean;
+    characterIsMovingForward: boolean;
+    characterIsMovingBackward: boolean;
+
     // rewardCount: number
     rewardManager: RewardManager
     explosionManager: ExplosionManager;
@@ -52,7 +54,7 @@ export class ForestScene extends Scene implements SceneInteractable {
     
     constructor() {
         super('ForestScene');
-        this.characterIsMoving = false;
+        this.characterIsMovingForward = false;
     }
 
     preload() {
@@ -143,7 +145,7 @@ export class ForestScene extends Scene implements SceneInteractable {
         this.backgroundManager.updateBackgroundMovement(delta);
         this.platformManager.updatePlatformsPosition(delta);
         this.explosionManager.updateExplosionsPosition(delta);
-
+        this.characterManager.manageFlipping()
     }
 
     handleCharacterDamage() {
@@ -180,18 +182,18 @@ export class ForestScene extends Scene implements SceneInteractable {
 
     jumpMainPlayer(): Promise<boolean> {
         return new Promise((resolve) => {
-            if (this.characterIsMoving) {
+            if (this.characterIsMovingForward) {
                 resolve(false);
                 return;
             }
 
-            this.characterIsMoving = true;
+            this.characterIsMovingForward = true;
             this.character.setVelocityY(JUMP_HEIGHT);
             
             this.character.play('boyRun');
 
             this.time.delayedCall(1500, () => {
-                this.characterIsMoving = false;
+                this.characterIsMovingForward = false;
                 resolve(true);
             }, [], this);
         });
@@ -200,21 +202,44 @@ export class ForestScene extends Scene implements SceneInteractable {
    
     moveForwardMainPlayer(): Promise<boolean> {
         return new Promise((resolve) => {
-            if (this.characterIsMoving) {
-                console.log('----player already moves-----', this.characterIsMoving)
+            if (this.characterIsMovingForward) {
+                console.log('----player already moves-----', this.characterIsMovingForward)
                 resolve(false);
                 return;
             }
-            console.log('character starts moving', this.characterIsMoving)
-            this.characterIsMoving = true;
+            console.log('character starts moving', this.characterIsMovingForward)
+            this.characterIsMovingForward = true;
             
             // Play the running animation
             this.character.play('boyRun');
             this.time.delayedCall(1500, () => {
-                this.characterIsMoving = false;
+                this.characterIsMovingForward = false;
                 resolve(true);
             }, [], this);
             
+        }); 
+    }
+
+    moveBackMainPlayer(): Promise<boolean> {
+        return new Promise((resolve) => {
+            if (this.characterIsMovingBackward || this.characterIsMovingForward) {
+                console.log('----player already moves-----')
+                resolve(false);
+                return;
+            }
+            
+            console.log('character starts moving backwords', this.characterIsMovingBackward)
+            this.characterIsMovingBackward = true;
+
+            // Play the running animation
+            this.character.play('boyRun');
+            this.time.delayedCall(1500, () => {
+                this.characterIsMovingBackward = false;
+                resolve(true);
+            }, [], this);
+
         });
-    }    
+
+    }
+    
 }

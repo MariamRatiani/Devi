@@ -1,12 +1,14 @@
 // PlatformItem.ts
 import {PLATFORMS_VELOCITY} from "../constants.ts";
+import {ForestScene} from "../ForestScene";
 
 export abstract class PlatformItem {
-    protected scene: Phaser.Scene;
+    protected scene: ForestScene ; 
     protected sprite: Phaser.Physics.Arcade.Sprite;
+    protected forestScene: ForestScene
 
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string) {
-        this.scene = scene;
+        this.scene = scene as ForestScene;
         this.sprite = this.scene.physics.add.sprite(x, y, texture);
         this.sprite.body?.setAllowGravity(false);
         this.sprite.body?.setImmovable(true);
@@ -16,7 +18,12 @@ export abstract class PlatformItem {
 
     update(delta: number): void {
         const moveAmount = PLATFORMS_VELOCITY / delta;
-        this.sprite.x -= moveAmount;
+        if(this.scene.characterIsMovingForward){
+            this.sprite.x -= moveAmount;
+        }else if(this.scene.characterIsMovingBackward) {
+            this.sprite.x += moveAmount;
+        }
+        
     }
 
     getSprite(): Phaser.Physics.Arcade.Sprite {
