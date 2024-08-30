@@ -33,9 +33,11 @@
         "@uiw/codemirror-theme-vscode": "^4.23.0",
         "@uiw/react-codemirror": "^4.23.0",
         "draft-js": "^0.11.7",
+        "firebase": "^10.13.1",
         "phaser": "^3.80.1",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
+        "react-router-dom": "^6.26.1",
         "thememirror": "^2.0.1"
     },
     "devDependencies": {

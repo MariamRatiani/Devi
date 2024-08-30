@@ -1,0 +1,124 @@
+/* styles.css */
+
+.auth-container-parent {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #f0f2f5; 
+}
+
+.auth-container {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.auth-container button {
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.auth-container button:hover {
+    background-color: #0056b3;
+}
+
+.auth-container .auth-button {
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 5px;
+}
+
+.auth-container .auth-button:hover {
+    background-color: #0056b3;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.error {
+    color: red;
+    margin-bottom: 15px;
+}
+
+/* New styles for the toggle buttons */
+.toggle-buttons {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.toggle-button {
+    padding: 10px 15px;
+    margin-left: 10px;
+    background-color: #6c757d;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.toggle-button:hover {
+    background-color: #5a6268;
+}
+
+.toggle-button.google-signin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 15px;
+    background-color: #ffffff; 
+    color: #555; 
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+.toggle-button.google-signin:hover {
+    background-color: #f7f7f7; 
+}
+
+.toggle-button.google-signin img {
+    width: 20px; 
+    height: 20px;
+    margin-right: 10px;
+}
