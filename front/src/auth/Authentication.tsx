@@ -11,6 +11,17 @@ import { myauth } from "./firebaseConfig";
 import Register from "./Register";
 import Login from "./Login";
 import {useNavigate} from "react-router-dom";
+import {NavigateFunction} from "react-router/dist/lib/hooks";
+
+export const handleSignOut = async (auth: Auth, navigate: NavigateFunction) => {
+    try {
+        await signOut(auth);
+        navigate("/");
+        console.log("User signed out");
+    } catch (error) {
+        console.error("Error signing out:", error);
+    }
+};
 
 const Authentication: React.FC = () => {
     const [user, setUser] = useState<User | null>(null);
@@ -42,7 +53,7 @@ const Authentication: React.FC = () => {
             }
         });
 
-        return () => unsubscribe(); // Cleanup the observer on unmount
+        return () => unsubscribe();
     }, [navigate]);
 
     const handleGoogleSignIn = async () => {
@@ -70,21 +81,12 @@ const Authentication: React.FC = () => {
         }
     };
 
-    const handleSignOut = async () => {
-        try {
-            await signOut(myauth);
-            console.log("User signed out");
-        } catch (error) {
-            console.error("Error signing out:", error);
-        }
-    };
-
     return (
         <div className="auth-container-parent">
             {user ? (
                 <div className="auth-container">
                     <h2>Welcome, {user.email}</h2>
-                    <button className="auth-button" onClick={handleSignOut}>Sign Out</button>
+                    <button className="auth-button" onClick={() => handleSignOut(myauth, navigate)}>Sign Out</button>
                 </div>
             ) : (
                 <div className="auth-container">

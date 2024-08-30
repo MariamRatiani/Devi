@@ -1,17 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './auth/auth.css'
-import Authentication from "./auth/Authentication.tsx";
 import {
     createBrowserRouter,
     RouterProvider,
 } from "react-router-dom";
 import Playground from "./playground/Playground.tsx";
+import Homepage from "./homePage/Homepage";
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Authentication />
+        element: <Homepage />
     },
     {
         path: "/game",

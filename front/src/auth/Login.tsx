@@ -1,9 +1,13 @@
-// Login.tsx
 import React, { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { myauth } from "./firebaseConfig";
 
-const Login: React.FC = () => {
+// Define the prop type for the close function
+interface LoginProps {
+    close: () => void;
+}
+
+const Login: React.FC<LoginProps> = ({ close }) => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [error, setError] = useState<string>("");
@@ -14,6 +18,7 @@ const Login: React.FC = () => {
             const userCredential = await signInWithEmailAndPassword(myauth, email, password);
             const user = userCredential.user;
             console.log("User logged in:", user);
+            close(); // Close the form after successful login
         } catch (error: any) {
             console.error("Error logging in:", error.message);
             setError(error.message);
@@ -21,25 +26,26 @@ const Login: React.FC = () => {
     };
 
     return (
-        <div className="auth-container">
-            <h2>Login</h2>
+        <div className="auth-container login-register-container">
+            <button id="close-auth-button" onClick={close}>X</button> {/* Add close button */}
+            <h2>შესვლა</h2>
             {error && <div className="error">{error}</div>}
             <form onSubmit={handleLogin}>
                 <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Email"
+                    placeholder="მეილი"
                     required
                 />
                 <input
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Password"
+                    placeholder="პაროლი"
                     required
                 />
-                <button type="submit">Login</button>
+                <button  className="final-auth-button" type="submit">შესვლა</button>
             </form>
         </div>
     );

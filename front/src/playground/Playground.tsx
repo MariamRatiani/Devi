@@ -4,6 +4,9 @@ import './playground.css';
 import GeorgianCodeEditor from "../editor/GeorgianLanguageEditor.tsx";
 import { EventBus } from '../game/EventBus.ts';
 import LanguageRulesModal from "../editor/LanguageRulesModal.tsx";
+import {handleSignOut} from "../auth/Authentication";
+import {myauth} from "../auth/firebaseConfig";
+import {useNavigate} from "react-router-dom";
 
 function Playground() {
     const [code, setCode] = useState('// დაწერე კოდი აქ');
@@ -11,7 +14,8 @@ function Playground() {
     const editorRef = useRef<any>(null);
     const [showRules, setShowRules] = useState(false); 
     const [showNotification, setShowNotification] = useState(false); 
-
+    const navigate = useNavigate();
+    
     const currentScene = (scene: Phaser.Scene) => {
         console.log(scene);
     };
@@ -85,10 +89,11 @@ function Playground() {
 
             <div className="editorContainer">
                 <GeorgianCodeEditor ref={editorRef} code={code} setCode={setCode} />
-                    <div className="right-button-container">
-                        <button className="stylish-button" onClick={didTapOnRunCode}>გაშვება</button>
-                        <button className="stylish-button" onClick={didTapOnResetCode}>გასუფთავება</button>
-                    </div>
+                <div className="right-button-container">
+                    <button className="stylish-button" onClick={didTapOnRunCode}>გაშვება</button>
+                    <button className="stylish-button" onClick={didTapOnResetCode}>გასუფთავება</button>
+                    <button className="stylish-red-button" onClick={() => handleSignOut(myauth, navigate)}>გასვლა</button>
+                </div>
                 <button className="help-button" onClick={toggleRulesModal}>?</button>
             </div>
 

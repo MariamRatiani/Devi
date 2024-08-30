@@ -1,26 +1,75 @@
-/* styles.css */
+/* auth.css */
 
-.auth-container-parent {
-    width: 100%;
-    height: 100vh;
+/*.auth-container {*/
+/*    display: flex;*/
+/*    max-width: 400px;*/
+/*    width: 100%;*/
+/*    text-align: center;*/
+/*}*/
+
+body.modal-open {
+    overflow: hidden;
+}
+
+.auth-container.login-register-container {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: #f0f2f5; 
+    flex-direction: column;
+    width: 20vw;
+    height: 38vh;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #2a5057;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 20;
 }
 
-.auth-container {
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 40px;
-    max-width: 400px;
-    width: 100%;
-    text-align: center;
-    position: relative;
+.login-register-container {
+    font-size: 32px;
+    color: #2dda8c;
+}
+
+.auth-container.login-register-container.active {
+    display: block;
+}
+
+.dark-overlay.active {
+    display: block;
+}
+
+.auth-container.login-register-container h2 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.auth-container.login-register-container {
+    transition: all 0.3s ease-in-out;
+}
+
+/* Close button (red "X") styles */
+#close-auth-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 30; /* Ensure it's on top */
+    line-height: 1; /* For centering the 'X' */
 }
 
 form {
@@ -36,9 +85,9 @@ input {
     font-size: 16px;
 }
 
-.auth-container button {
+.final-auth-button {
     padding: 10px;
-    background-color: #007bff;
+    background-color: #0f9e69;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -46,8 +95,8 @@ input {
     font-size: 16px;
 }
 
-.auth-container button:hover {
-    background-color: #0056b3;
+.final-auth-button:hover {
+    background-color: #0f8a52;
 }
 
 .auth-container .auth-button {
@@ -103,10 +152,10 @@ h2 {
     align-items: center;
     justify-content: center;
     padding: 10px 15px;
-    background-color: #ffffff; 
+    background-color: #ffffff;
     color: #555; 
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 12px;
     font-size: 14px;
     cursor: pointer;
     transition: background-color 0.3s ease;

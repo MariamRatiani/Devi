@@ -1,37 +1,67 @@
+:root {
+    --color-bg1: rgb(50, 114, 81);  /* Emerald Green */
+    --color-bg2: rgb(25, 80, 115);  /* Sapphire Blue */
+    --color1: 85, 185, 150;  /* Mint Green */
+    --color2: 255, 148, 85;  /* Coral Orange */
+    --color3: 62, 154, 104;  /* Leaf Green */
+    --color4: 255, 122, 105;  /* Peach Coral */
+    --color5: 50, 185, 170;  /* Bright Teal */
+    --color-interactive: 95, 215, 200;  /* Light Turquoise */
+    --circle-size: 80%;
+    --blending: hard-light;  
+}
+
 html, body {
     font-family: 'Dongle', sans-serif;
     margin: 0;
     padding: 0;
 }
 
+.main-container {
+    position: relative;
+}
+
 .text-container {
+    position: absolute;
     z-index: 100;
     width: 100vw;
     height: 100vh;
     display: flex;
-    position: absolute;
+    flex-direction: column;
     top: 0;
     left: 0;
-    justify-content: center;
-    align-items: center;
+    justify-content: center; 
+    align-items: center; 
     font-size: 96px;
     color: white;
     opacity: 0.8;
     user-select: none;
-    text-shadow: 1px 1px rgba(0,0,0,0.1);
+    text-shadow: 1px 1px rgba(0, 0, 0, 0.1);
 }
 
-:root {
-    --color-bg1: rgb(108, 0, 162);
-    --color-bg2: rgb(0, 17, 82);
-    --color1: 18, 113, 255;
-    --color2: 221, 74, 255;
-    --color3: 100, 220, 255;
-    --color4: 200, 50, 50;
-    --color5: 180, 180, 50;
-    --color-interactive: 140, 100, 255;
-    --circle-size: 80%;
-    --blending: hard-light;
+.main-auth-container {
+    position: absolute;
+    margin-top: 60px;
+    margin-right: 90px;
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.ml-50 {
+    margin-left: 50px;
+}
+
+.mr-20 {
+    margin-right: 20px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
 }
 
 @keyframes moveInCircle {
