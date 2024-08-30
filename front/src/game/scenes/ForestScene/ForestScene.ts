@@ -237,7 +237,25 @@ export class ForestScene extends Scene implements SceneInteractable {
                 this.characterIsMovingBackward = false;
                 resolve(true);
             }, [], this);
+        });
+    }
+    
+    jumpBackwardsMainPlayer(): Promise<boolean> {
+        return new Promise((resolve) => {
+            if (this.characterIsMovingBackward) {
+                resolve(false);
+                return;
+            }
 
+            this.characterIsMovingBackward = true;
+            this.character.setVelocityY(JUMP_HEIGHT);
+
+            this.character.play('boyRun');
+
+            this.time.delayedCall(1500, () => {
+                this.characterIsMovingForward = false;
+                resolve(true);
+            }, [], this);
         });
 
     }
