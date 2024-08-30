@@ -75,8 +75,11 @@ export class StatementInterpreter implements StatementVisitor {
     }
 
     async doForStatement(statement: ForStatement): Promise<void> {
-        for (let i = 0; i < statement.iterationCount; i++) {
-            await statement.callStatements(this);
+        let iterationCount = this.expressionInterpreter.interpret(statement.iterationCount);
+        if (typeof iterationCount === 'number') {
+            for (let i = 0; i < iterationCount; i++) {
+                await statement.callStatements(this);
+            }
         }
     }
     

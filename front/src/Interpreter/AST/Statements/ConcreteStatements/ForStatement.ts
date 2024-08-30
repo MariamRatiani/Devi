@@ -1,11 +1,12 @@
 import { Statement } from "../Interfaces/Statement";
 import { StatementContainer } from "./StatementContainer";
 import { StatementVisitor } from "../Interfaces/Visitor";
+import {Expression} from "../../Expressions/Expression.ts";
 
 export class ForStatement extends StatementContainer implements Statement {
-    iterationCount: number
+    iterationCount: Expression
 
-    constructor(statements: Statement[] = [], iterationCount: number) {
+    constructor(statements: Statement[] = [], iterationCount: Expression) {
         super(statements);
         this.iterationCount = iterationCount;
     }
