@@ -46,7 +46,6 @@ export class BackgroundManager {
             // if (this.scene.cursors.left.isDown) {
             //     this.moveBackground(delta, false)
             // } else if (this.scene.cursors.right.isDown) {
-            console.log("backgtounf should be moving")
             this.moveBackground(delta, true)
             // }
         }

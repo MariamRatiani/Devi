@@ -41,7 +41,7 @@ export class StatementInterpreter implements StatementVisitor {
     }
 
     async doIfStatement(statement: IfStatement): Promise<void> {
-        let conditionValue = this.expressionInterpreter.interpret(statement.condition);
+        const conditionValue = this.expressionInterpreter.interpret(statement.condition);
         if (conditionValue) {
             await statement.callStatements(this);
         }
@@ -50,16 +50,21 @@ export class StatementInterpreter implements StatementVisitor {
 
     async doFuncStatement(statement: FuncStatement): Promise<void> {
         switch (statement.funcName) {
-            case SceneAction.MOVE_MAIN_CHARACTER:
+            case SceneAction.MOVE_FORWARD_MAIN_CHARACTER:
                 await this.scene.moveForwardMainPlayer();
                 console.log('did moved');
+                break;
+            default:
+            case SceneAction.MOVE_BACKWARD_CHARACTER:
+                await this.scene.moveBackMainPlayer();
                 break;
             case SceneAction.JUMP_MAIN_CHARACTER:
                 await this.scene.jumpMainPlayer();
                 console.log('did jumped');
                 break;
-            default:
-                console.log('Invalid action on func');
+            case SceneAction.JUMP_BACKWARDS_MAIN_CHARACTER:
+                await this.scene.jumpBackwardsMainPlayer()
+                break;
         }
     }
 
@@ -75,7 +80,7 @@ export class StatementInterpreter implements StatementVisitor {
     }
 
     async doForStatement(statement: ForStatement): Promise<void> {
-        let iterationCount = this.expressionInterpreter.interpret(statement.iterationCount);
+        const iterationCount = this.expressionInterpreter.interpret(statement.iterationCount);
         if (typeof iterationCount === 'number') {
             for (let i = 0; i < iterationCount; i++) {
                 await statement.callStatements(this);

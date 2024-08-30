@@ -77,22 +77,24 @@ function Playground() {
     return (
         <div className="playground">
             <div className="phaserGameContainer">
-                <PhaserGame ref={phaserRef} currentActiveScene={currentScene} />
+                <PhaserGame ref={phaserRef} currentActiveScene={currentScene}/>
+                
+                <button className="stylish-button left-button" onClick={didTapOnResetGame}>თავიდან დაწყება</button>
+
             </div>
 
             <div className="editorContainer">
                 <GeorgianCodeEditor ref={editorRef} code={code} setCode={setCode} />
-                <div className="button-container">
-                    <button className="stylish-button" onClick={didTapOnRunCode}>Run Code</button>
-                    <button className="stylish-button" onClick={didTapOnResetCode}>Reset Code</button>
-                    <button className="stylish-button" onClick={didTapOnResetGame}>Reset Game</button>
-                </div>
+                    <div className="right-button-container">
+                        <button className="stylish-button" onClick={didTapOnRunCode}>გაშვება</button>
+                        <button className="stylish-button" onClick={didTapOnResetCode}>გასუფთავება</button>
+                    </div>
                 <button className="help-button" onClick={toggleRulesModal}>?</button>
             </div>
 
             <div className={`notification ${showNotification ? '' : 'notification-hidden'}`}>თამაში დაიწყო!</div>
 
-            {showRules && <LanguageRulesModal onClose={toggleRulesModal} />}
+            {showRules && <LanguageRulesModal onClose={toggleRulesModal}/>}
         </div>
     );
 }

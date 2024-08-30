@@ -9,6 +9,8 @@ export class AssetManager {
     }
 
     preloadAssets() {
+        
+        this.loadCharacterFrames()
         this.scene.load.image('comb', '/assets/comb.png')
         this.scene.load.image('backgroundC1', '/assets/Forest/PNG/Backgrounds/background C layer1.png');
         this.scene.load.image('backgroundC2', '/assets/Forest/PNG/Backgrounds/background C layer2.png');
@@ -24,9 +26,37 @@ export class AssetManager {
         this.scene.load.image('tile6', '/assets/Forest/Platforms/tile6.png');
         this.scene.load.image('tile7', '/assets/Forest/Platforms/tile7.png');
 
+        this.scene.load.image('heart', '/assets/heart.png')
+
+        this.loadExplosion()
+        
+        this.loadSounds()
         // Add a callback to log when assets are done loading
         this.scene.load.on('complete', () => {
             console.log('All assets loaded');
         });
     }
+    
+    private loadExplosion()  {
+        for (let i = 1; i <= 8; i++) {
+            this.scene.load.image(`explosion_frame_${i}`, `assets/explosion/explosion_frame_transparent_${i}.png`);
+        }
+
+    }
+    private loadCharacterFrames() {
+        this.scene.load.image('boyWithBull1', 'assets/character_frames/boyWithBull1.png');
+        this.scene.load.image('boyWithBull2', 'assets/character_frames/boyWithBull2.png');
+        this.scene.load.image('boyWithBull3', 'assets/character_frames/boyWithBull3.png');
+        this.scene.load.image('boyWithBull4', 'assets/character_frames/boyWithBull4.png');
+        this.scene.load.image('boyWithBull5', 'assets/character_frames/boyWithBull5.png');
+        this.scene.load.image('boyWithBull6', 'assets/character_frames/boyWithBull6.png');
+        this.scene.load.image('boyWithBull7', 'assets/character_frames/boyWithBull7.png');
+    }
+    
+    private loadSounds() {
+        this.scene.load.audio('backgroundMusic', '/audio/blue_skies.mp3');
+        this.scene.load.audio('explosionAudio', '/audio/explosion.mp3')
+        this.scene.load.audio('combTaking', '/audio/comb_taking.mp3')
+    }
+    
 }
