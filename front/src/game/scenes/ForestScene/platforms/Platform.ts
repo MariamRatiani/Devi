@@ -32,7 +32,11 @@ export class Platform {
     }
 
     private move(x: number) {
-        this.platform.x += x;
+        if (this.scene.characterIsMovingForward) {
+            this.platform.x += x;
+        }else if(this.scene.characterIsMovingBackward){
+            this.platform.x -= x;
+        }
     }
     update(delta: number): void {
         // Update the platform position if needed

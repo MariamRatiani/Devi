@@ -50,15 +50,20 @@ export class StatementInterpreter implements StatementVisitor {
 
     async doFuncStatement(statement: FuncStatement): Promise<void> {
         switch (statement.funcName) {
-            case SceneAction.MOVE_MAIN_CHARACTER:
+            case SceneAction.MOVE_FORWARD_MAIN_CHARACTER:
                 await this.scene.moveForwardMainPlayer();
                 console.log('did moved');
+                break;
+            default:
+            case SceneAction.MOVE_BACKWARD_CHARACTER:
+                await this.scene.moveBackMainPlayer();
                 break;
             case SceneAction.JUMP_MAIN_CHARACTER:
                 await this.scene.jumpMainPlayer();
                 console.log('did jumped');
                 break;
-            default:
+                  
+                console.log('Invalid action on func');
                 console.log('Invalid action on func');
         }
     }

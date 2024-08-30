@@ -77,9 +77,7 @@ export class PlatformManager {
     }
 
     public updatePlatformsPosition(delta: number) {
-        if (this.scene.characterIsMoving) {
             this.platforms.forEach(platform => platform.update(delta));
-        }
     }
 
 

@@ -43,15 +43,15 @@ export class ExplosionManager {
         this.scene.physics.add.overlap(this.scene.character, explosion.getSprite(), () => {
             explosion.handleCollision(this.scene.character);
         });
+        
     }
 
     public updateExplosionsPosition(delta: number) {
-        if (this.scene.characterIsMoving) {
             const moveAmount = PLATFORMS_VELOCITY / delta;
             this.explosions.forEach(explosion => {
                 explosion.updatePosition(-moveAmount);
             });
-        }
+        
     }
 
     // creates explosions on the ground

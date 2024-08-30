@@ -23,6 +23,22 @@ export class CharacterManager {
             frameRate: 13, // Adjust this to change animation speed
             repeat: 4 // -1 for infinite looping
         });
+
+        this.scene.anims.create({
+            key: 'boyRunFlipped',
+            frames: [
+                { key: 'boyWithBull1', flipX: true },
+                { key: 'boyWithBull2', flipX: true },
+                { key: 'boyWithBull3', flipX: true },
+                { key: 'boyWithBull4', flipX: true },
+                { key: 'boyWithBull5', flipX: true },
+                { key: 'boyWithBull6', flipX: true },
+                { key: 'boyWithBull7', flipX: true }
+            ],
+            frameRate: 13, // Adjust this to change animation speed
+            repeat: 4 // 4 means it will repeat 4 times, set to -1 for infinite looping
+        });
+
     }
 
     createCharacter() {
@@ -33,6 +49,14 @@ export class CharacterManager {
         const scalingNumber: number = 6
         this.scene.character.setScale(scale[0]/scalingNumber, scale[0]/scalingNumber).setOrigin(0, 0).setScrollFactor(0)
 
+    }
+
+    manageFlipping() {
+        if(this.scene.characterIsMovingBackward) {
+            this.scene.character.flipX = true;  // Flip to the left
+        }else {
+            this.scene.character.flipX = false  // Flip to the right
+        }
     }
 
     updateCharacterMovement() {
@@ -52,7 +76,7 @@ export class CharacterManager {
             this.scene.character.body.velocity.x = 0; // Stop horizontal movement
             
         }
-        if (!this.scene.characterIsMoving) {
+        if (!this.scene.characterIsMovingForward) {
             this.scene.character.setVelocity(0, 0); // Stop all movement
         }
 
@@ -76,7 +100,7 @@ export class CharacterManager {
     }
     // CHARACTER_VELOCITY: number = 100
     private handleCharacterXCoordinateMoving() {
-        this.scene.characterIsMoving = true
+        this.scene.characterIsMovingForward = true
         const moveAmount = this.scene.cursors.left.isDown ? -1*(CHARACTER_VELOCITY_X): this.scene.cursors.right.isDown ? CHARACTER_VELOCITY_X : 0;
         const characterRightEdge = this.scene.character.x + this.scene.character.width;
 
@@ -88,7 +112,7 @@ export class CharacterManager {
             this.scene.character.setVelocityX(moveAmount);
         }else {
             this.scene.character.setVelocityX(0);
-            this.scene.characterIsMoving = false
+            this.scene.characterIsMovingForward = false
         }
     }
 

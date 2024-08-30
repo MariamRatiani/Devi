@@ -20,6 +20,7 @@ export class ExplosionItem extends PlatformItem {
     handleCollision(player: Phaser.Physics.Arcade.Sprite): void {
         // This method should trigger the explosion animation
         if (!this.sprite.getData('triggered')) {
+            this.forestScene.audioManager.playExplosion()
 
             this.sprite.setData('triggered', true);
             this.sprite.play('explosionAnim'); // Play explosion animation
@@ -38,7 +39,13 @@ export class ExplosionItem extends PlatformItem {
     }
 
     updatePosition(moveAmount: number) {
-        this.sprite.x += moveAmount;
+        
+        if(this.forestScene.characterIsMovingForward) {
+            this.sprite.x += moveAmount;
+        }else if(this.forestScene.characterIsMovingBackward){
+            this.sprite.x -= moveAmount;
+
+        }
     }
 
     getSprite(): Phaser.Physics.Arcade.Sprite {
