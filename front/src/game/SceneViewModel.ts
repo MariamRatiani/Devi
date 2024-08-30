@@ -4,7 +4,7 @@ import { StatementParser } from "../Interpreter/AST/Statements/StatementParser";
 import { Tokenizer } from "../Interpreter/Tokenizer/Tokenizer";
 
 export interface SceneViewModel {
-    startCodeExecution(code: String): void
+    startCodeExecution(code: string): void
     reset(): void
 }
 
@@ -16,14 +16,14 @@ export class SceneViewModelImpl implements SceneViewModel {
     }
 
     startCodeExecution(code: string): void {
-        let tokenizer = new Tokenizer(code)
-        let tokens = tokenizer.scanTokens()
+        const tokenizer = new Tokenizer(code)
+        const tokens = tokenizer.scanTokens()
 
-        let globalEnvironment = new Environment()
-        let parser = new StatementParser(tokens, globalEnvironment)
-        let statements = parser.parse()
+        const globalEnvironment = new Environment()
+        const parser = new StatementParser(tokens, globalEnvironment)
+        const statements = parser.parse()
 
-        let interpreter = new StatementInterpreter(this.scene, statements)
+        const interpreter = new StatementInterpreter(this.scene, statements)
         interpreter.execute()
     }
 

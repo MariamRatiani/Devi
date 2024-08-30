@@ -253,7 +253,7 @@ export class ForestScene extends Scene implements SceneInteractable {
             this.character.play('boyRun');
 
             this.time.delayedCall(1500, () => {
-                this.characterIsMovingForward = false;
+                this.characterIsMovingBackward = false;
                 resolve(true);
             }, [], this);
         });
