@@ -20,18 +20,17 @@ html, body {
     user-select: none;
     text-shadow: 1px 1px rgba(0,0,0,0.1);
 }
-
 :root {
-    --color-bg1: rgb(108, 0, 162);
-    --color-bg2: rgb(0, 17, 82);
-    --color1: 18, 113, 255;
-    --color2: 221, 74, 255;
-    --color3: 100, 220, 255;
-    --color4: 200, 50, 50;
-    --color5: 180, 180, 50;
-    --color-interactive: 140, 100, 255;
+    --color-bg1: rgb(50, 114, 81);  /* Emerald Green */
+    --color-bg2: rgb(25, 80, 115);  /* Sapphire Blue */
+    --color1: 85, 185, 150;  /* Mint Green */
+    --color2: 255, 148, 85;  /* Coral Orange */
+    --color3: 62, 154, 104;  /* Leaf Green */
+    --color4: 255, 122, 105;  /* Peach Coral */
+    --color5: 50, 185, 170;  /* Bright Teal */
+    --color-interactive: 95, 215, 200;  /* Light Turquoise */
     --circle-size: 80%;
-    --blending: hard-light;
+    --blending: hard-light;  /* Hard-light for vivid, strong colors */
 }
 
 @keyframes moveInCircle {
