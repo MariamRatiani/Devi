@@ -62,7 +62,10 @@ export class StatementInterpreter implements StatementVisitor {
                 await this.scene.jumpMainPlayer();
                 console.log('did jumped');
                 break;
-                  
+            case SceneAction.JUMP_BACKWARDS_MAIN_CHARACTER:
+                await this.scene.jumpBackwardsMainPlayer()
+                break;
+
                 console.log('Invalid action on func');
                 console.log('Invalid action on func');
         }
