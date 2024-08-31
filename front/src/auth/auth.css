@@ -1,0 +1,173 @@
+/* auth.css */
+
+/*.auth-container {*/
+/*    display: flex;*/
+/*    max-width: 400px;*/
+/*    width: 100%;*/
+/*    text-align: center;*/
+/*}*/
+
+body.modal-open {
+    overflow: hidden;
+}
+
+.auth-container.login-register-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 20vw;
+    height: 38vh;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #2a5057;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 20;
+}
+
+.login-register-container {
+    font-size: 32px;
+    color: #2dda8c;
+}
+
+.auth-container.login-register-container.active {
+    display: block;
+}
+
+.dark-overlay.active {
+    display: block;
+}
+
+.auth-container.login-register-container h2 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.auth-container.login-register-container {
+    transition: all 0.3s ease-in-out;
+}
+
+/* Close button (red "X") styles */
+#close-auth-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 30; /* Ensure it's on top */
+    line-height: 1; /* For centering the 'X' */
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.final-auth-button {
+    padding: 10px;
+    background-color: #0f9e69;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.final-auth-button:hover {
+    background-color: #0f8a52;
+}
+
+.auth-container .auth-button {
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 5px;
+}
+
+.auth-container .auth-button:hover {
+    background-color: #0056b3;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.error {
+    color: red;
+    margin-bottom: 15px;
+}
+
+/* New styles for the toggle buttons */
+.toggle-buttons {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.toggle-button {
+    padding: 10px 15px;
+    margin-left: 10px;
+    background-color: #6c757d;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.toggle-button:hover {
+    background-color: #5a6268;
+}
+
+.toggle-button.google-signin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 15px;
+    background-color: #ffffff;
+    color: #555; 
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+.toggle-button.google-signin:hover {
+    background-color: #f7f7f7; 
+}
+
+.toggle-button.google-signin img {
+    width: 20px; 
+    height: 20px;
+    margin-right: 10px;
+}

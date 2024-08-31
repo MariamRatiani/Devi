@@ -151,3 +151,25 @@ body {
     transform: translateX(-50%) translateY(-10px);
     pointer-events: none; 
 }
+
+/* CSS for the stylish-red-button to move it to the top-left corner */
+.stylish-red-button {
+    position: fixed; /* Fixes the button relative to the viewport */
+    top: 16px;       /* 16px from the top */
+    left: 16px;      /* 16px from the left */
+    background-color: #ff4c4c; /* Red color for the exit button */
+    border: none;
+    color: white;
+    padding: 10px 20px; /* Adjust padding for a comfortable button size */
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    z-index: 1000; /* Ensure it stays on top of other elements */
+    transition: background-color 0.3s ease;
+}
+
+.stylish-red-button:hover {
+    background-color: #d43f3f; /* Darker red on hover for better feedback */
+}
