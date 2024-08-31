@@ -306,5 +306,8 @@ export class ForestScene extends Scene implements SceneInteractable {
         });
 
     }
-    
+
+    getRewards(): number {
+        return this.rewardManager.getRewardCount()
+    }
 }

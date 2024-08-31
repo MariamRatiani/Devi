@@ -12,6 +12,11 @@ import { Environment } from "../Statements/ConcreteStatements/Environment.ts";
 
 export class ExpressionInterpreter implements ExpressionVisitor<unknown>  {
     private currentEnv: Environment
+    private gameRewardable: GameRewardable
+    
+    constructor(gameRewardable: GameRewardable) {
+        this.gameRewardable = gameRewardable;
+    }
 
     setCurrentEnvironment(env: Environment) {
         this.currentEnv = env
@@ -20,7 +25,6 @@ export class ExpressionInterpreter implements ExpressionVisitor<unknown>  {
     interpret(expression: Expression): unknown {
         try {
             return this.evaluate(expression);
-            // console.log(this.stringify(value));
         } catch (error) {
             if (error instanceof RuntimeError) {
                 console.error(`${error.message} [line ${error.token.line}]`);
@@ -175,6 +179,9 @@ export class ExpressionInterpreter implements ExpressionVisitor<unknown>  {
     }
 
     visitVarExpr(varExpr: VarExpr): unknown {
+        if (varExpr.name.lexeme == 'სავარცხლები') {
+            return this.gameRewardable.getRewards()
+        }
         let variable = this.currentEnv.getVariable(varExpr.name.lexeme);
         return variable?.value;
     }

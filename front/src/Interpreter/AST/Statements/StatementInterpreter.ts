@@ -13,11 +13,12 @@ import {Expression} from "../Expressions/Expression.ts";
 export class StatementInterpreter implements StatementVisitor {
     private statements: Statement[] = [];
     private scene: SceneInteractable;
-    private expressionInterpreter = new ExpressionInterpreter();
+    private expressionInterpreter: ExpressionInterpreter;
 
     constructor(scene: SceneInteractable, statements: Statement[]) {
         this.scene = scene;
         this.statements = statements;
+        this.expressionInterpreter = new ExpressionInterpreter(scene)
         console.log(statements)
     }
 
