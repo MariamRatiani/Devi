@@ -27,18 +27,36 @@ export class CharacterManager {
         this.scene.anims.create({
             key: 'boyRunFlipped',
             frames: [
-                { key: 'boyWithBull1', flipX: true },
-                { key: 'boyWithBull2', flipX: true },
-                { key: 'boyWithBull3', flipX: true },
-                { key: 'boyWithBull4', flipX: true },
-                { key: 'boyWithBull5', flipX: true },
-                { key: 'boyWithBull6', flipX: true },
-                { key: 'boyWithBull7', flipX: true }
+                { key: 'boyWithBull1' },
+                { key: 'boyWithBull2' },
+                { key: 'boyWithBull3' },
+                { key: 'boyWithBull4' },
+                { key: 'boyWithBull5' },
+                { key: 'boyWithBull6' },
+                { key: 'boyWithBull7' }
             ],
             frameRate: 13, // Adjust this to change animation speed
             repeat: 4 // 4 means it will repeat 4 times, set to -1 for infinite looping
         });
 
+        this.scene.anims.create({
+            key: 'boyBreathing',
+            frames: [
+                { key: 'boyBreathing1' },
+                { key: 'boyBreathing2' },
+                { key: 'boyBreathing3' },
+                { key: 'boyBreathing4' },
+                { key: 'boyBreathing5' },
+                { key: 'boyBreathing6' },
+                { key: 'boyBreathing5' },
+                { key: 'boyBreathing4' },
+                { key: 'boyBreathing3' },
+                { key: 'boyBreathing2' },
+                { key: 'boyBreathing1' },
+            ],
+            frameRate: 6, // Adjust this to control the speed of breathing
+            repeat: 3 // Infinite loop
+        })
     }
 
     createCharacter() {
@@ -51,12 +69,17 @@ export class CharacterManager {
 
     }
 
-    manageFlipping() {
+    manageAnimation() {
         if(this.scene.characterIsMovingBackward) {
             this.scene.character.flipX = true;  // Flip to the left
         }else {
             this.scene.character.flipX = false  // Flip to the right
         }
+        
+        // if(!this.scene.characterIsMovingForward &&
+        //     !this.scene.characterIsMovingBackward) {
+        //     this.scene.character.play('boyBreathing')
+        // }
     }
 
     updateCharacterMovement() {
@@ -93,9 +116,9 @@ export class CharacterManager {
         const moveAmount = this.scene.cursors.left.isDown ? -1*(CHARACTER_VELOCITY_X) : this.scene.cursors.right.isDown ? CHARACTER_VELOCITY_X : 0;
         moveAmount < 0 ? this.scene.character.flipX = true : this.scene.character.flipX = false
         if (moveAmount != 0) {
-            this.scene.characterIsMoving = true
+            this.scene.characterIsMovingForward = true
         }else {
-            this.scene.characterIsMoving = false
+            this.scene.characterIsMovingForward = false
         }
     }
     // CHARACTER_VELOCITY: number = 100

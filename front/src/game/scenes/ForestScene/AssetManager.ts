@@ -29,12 +29,22 @@ export class AssetManager {
         this.scene.load.image('heart', '/assets/heart.png')
 
         this.loadExplosion()
-        
+        this.loadBreathingBoy()
         this.loadSounds()
         // Add a callback to log when assets are done loading
         this.scene.load.on('complete', () => {
             console.log('All assets loaded');
         });
+    }
+    
+    private loadBreathingBoy() {
+        this.scene.load.image('boyBreathing1', 'assets/boy_breathing/boyWithBull-3_0000_Layer-6.png');
+        this.scene.load.image('boyBreathing2', 'assets/boy_breathing/boyWithBull-3_0001_Layer-5.png');
+        this.scene.load.image('boyBreathing3', 'assets/boy_breathing/boyWithBull-3_0002_Layer-4.png');
+        this.scene.load.image('boyBreathing4', 'assets/boy_breathing/boyWithBull-3_0003_Layer-3.png');
+        this.scene.load.image('boyBreathing5', 'assets/boy_breathing/boyWithBull-3_0004_Layer-2.png');
+        this.scene.load.image('boyBreathing6', 'assets/boy_breathing/boyWithBull-3_0005_Layer-1.png');
+
     }
     
     private loadExplosion()  {

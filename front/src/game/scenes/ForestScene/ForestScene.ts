@@ -148,7 +148,7 @@ export class ForestScene extends Scene implements SceneInteractable {
         this.backgroundManager.updateBackgroundMovement(delta);
         this.platformManager.updatePlatformsPosition(delta);
         this.explosionManager.updateExplosionsPosition(delta);
-        this.characterManager.manageFlipping()
+        this.characterManager.manageAnimation()
     }
 
     handleCharacterDamage() {
