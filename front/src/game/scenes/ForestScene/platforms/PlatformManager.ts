@@ -11,7 +11,7 @@ export class PlatformManager {
     private static distanceBetweenPlatforms = 270;
 
     private scene: ForestScene;
-    private platforms: Platform[] = [];
+    platforms: Platform[] = [];
     groundTop: number;
     groundHeight: number;
     private platformKey = 'tile3';

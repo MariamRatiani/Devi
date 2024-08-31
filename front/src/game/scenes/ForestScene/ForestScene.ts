@@ -12,6 +12,7 @@ import {RewardManager} from "./RewardManager.ts";
 import {ExplosionManager} from "./ExplosionManager.ts";
 import {LivesManager} from "./LivesManager.ts";
 import {AudioManager} from "./AudioManager";
+import {Platform} from "./platforms/Platform";
 
 export class ForestScene extends Scene implements SceneInteractable {
     static musicOn: boolean = false
@@ -140,6 +141,8 @@ export class ForestScene extends Scene implements SceneInteractable {
             return;
         }
 
+        this.checkPlatformCollisions()
+
         // update movements
         // this.characterManager.updateCharacterMovement();
         this.backgroundManager.updateBackgroundMovement(delta);
@@ -179,6 +182,42 @@ export class ForestScene extends Scene implements SceneInteractable {
         this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, text, { fontSize: '40px', color: '#FFFFFF' }).setOrigin(0.5);
     }
 
+    private checkPlatformCollisions() {
+        this.platformManager.platforms.forEach((platform) => {
+
+            this.detectFrontCollision(platform)
+            this.detectBackwardCollision(platform)
+        });
+    }
+    
+    private detectFrontCollision(platform: Platform) {
+        const charBounds = this.character.getBounds()
+        const platformBounds = platform.platform.getBounds()
+        
+        const overlap = platformBounds.left - charBounds.right
+        const isFrontOverlap = overlap < -20 && overlap > -30
+        const isBelowPlatform = Math.abs(platformBounds.bottom - charBounds.top) < 80
+        
+        if (isFrontOverlap && isBelowPlatform) {
+            console.log(charBounds.top, platformBounds.bottom)
+            EventBus.emit('did-happen-front-collision')
+        }
+    }
+
+    private detectBackwardCollision(platform: Platform) {
+        const charBounds = this.character.getBounds();
+        const platformBounds = platform.platform.getBounds();
+
+        const overlap = platformBounds.right - charBounds.left;
+        const isBackOverlap = overlap < 5 && overlap > -5;
+        const isBelowPlatform = Math.abs(platformBounds.bottom - charBounds.top) < 80;
+
+        if (isBackOverlap && isBelowPlatform) {
+            console.log(charBounds.left, platformBounds.right);
+            EventBus.emit('did-happen-backward-collision');
+        }
+    }
+
 
     jumpMainPlayer(): Promise<boolean> {
         return new Promise((resolve) => {
@@ -209,7 +248,11 @@ export class ForestScene extends Scene implements SceneInteractable {
             }
             console.log('character starts moving', this.characterIsMovingForward)
             this.characterIsMovingForward = true;
-            
+
+            EventBus.on('did-happen-front-collision', () => {
+                this.characterIsMovingForward = false
+                resolve(true);
+            });
             // Play the running animation
             this.character.play('boyRun');
             this.time.delayedCall(1500, () => {
@@ -230,6 +273,10 @@ export class ForestScene extends Scene implements SceneInteractable {
             
             console.log('character starts moving backwords', this.characterIsMovingBackward)
             this.characterIsMovingBackward = true;
+            EventBus.on('did-happen-backward-collision', () => {
+                this.characterIsMovingBackward = false
+                resolve(true);
+            });
 
             // Play the running animation
             this.character.play('boyRun');
