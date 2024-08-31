@@ -42,7 +42,6 @@ export class Platform {
         // Update the platform position if needed
         const moveAmount = PLATFORMS_VELOCITY / delta;
         this.move(-moveAmount);
-        //
         this.item?.update(delta);
     }
 }
